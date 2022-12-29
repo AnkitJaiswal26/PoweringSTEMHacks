@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
-import ProfileScreen from "./screens/ProfileScreen";
+import ProfileScreen from "./screens/Profiles/Profile";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Hospitals from "./screens/Hospitals/Hospitals";
 import PastHistory from './screens/PastHistory/PastHistory';
