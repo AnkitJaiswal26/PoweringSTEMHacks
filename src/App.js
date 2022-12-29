@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import "./App.css"
-import Button from '@mui/material/Button';
+import "./App.css";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -8,6 +7,7 @@ import {
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
     },
     {
       path:"/profile",
-      element: <h1>Profile</h1>
+      element: <ProfileScreen/>
     }
   ]);
   return (<>

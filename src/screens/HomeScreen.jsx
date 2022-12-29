@@ -1,4 +1,3 @@
-
 import { Container ,typography} from "@mui/system";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
