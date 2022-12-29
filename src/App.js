@@ -13,11 +13,15 @@ import Researchs from "./screens/Researchs/Researchs";
 import Research from "./screens/Research/Research";
 import HospitalDashboard from "./screens/Hospital/Dashboard/HospitalDashboard";
 import HospitalProfileScreen from "./screens/Hospital/Profile/HospitalProfile";
+<<<<<<< Updated upstream
 import HospitalPastRecords from "./screens/Hospital/PastRecords/HospitalPastRecords";
 import ResearchOrgDashboard from "./screens/ResearchOrg/Dashboard/ResearchOrgDashboard";
 import ResearchOrgProfile from "./screens/ResearchOrg/Profile/ResearchOrgProfile";
 import OrgResearchs from "./screens/ResearchOrg/Researchs/OrgResearchs";
 import OrgResearch from "./screens/ResearchOrg/Research/OrgResearch";
+=======
+import NewRecord from "./screens/Hospital/NewRecord/NewRecord"
+>>>>>>> Stashed changes
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -86,10 +90,10 @@ const App = () => {
 			path: "/fetchmydocs",
 			element: <FetchMyDocuments />,
 		},
-		{
-			path: "/fetchmydocs",
-			element: <FetchMyDocuments />,
-		},
+    {
+      path: "createNewRecord",
+      element: <NewRecord />
+    }
 	]);
 	return (
 		<>
