@@ -30,6 +30,7 @@ contract EHR {
     }
 
     struct Research {
+        uint256 id;
         address orgAdd;
         string name;
         string description;
@@ -151,12 +152,14 @@ contract EHR {
         string memory description,
         string memory cid
     ) public {
-        researchMapping[researchCount++] = Research(
+        researchMapping[researchCount] = Research(
+            researchCount,
             msg.sender,
             name,
             description,
             cid
         );
+        researchCount += 1;
     }
 
     // Access list for hospital
@@ -228,7 +231,7 @@ contract EHR {
     function hasUserRecordAccessForResearch(
         address userAddress,
         uint256 researchId
-    ) internal view returns (bool) {
+    ) public view returns (bool) {
         uint256 userId = userAddressMapping[userAddress];
 
         for (uint256 i = 0; i < userToResearchAccessList[userId].length; i++) {
@@ -443,5 +446,32 @@ contract EHR {
         address userAddress
     ) public view returns (User memory) {
         return userMapping[userAddressMapping[userAddress]];
+    }
+
+    function fetchHospitalByAddress(
+        address hospitalAddress
+    ) public view returns (Hospital memory) {
+        return hospitalMapping[hospitalAddressMapping[hospitalAddress]];
+    }
+
+    function fetchOrganizationByAddress(
+        address orgAddress
+    ) public view returns (ResearchOrg memory) {
+        return researchOrgMapping[researchOrgAddressMapping[orgAddress]];
+    }
+
+    function fetchResearchById(
+        uint256 id
+    ) public view returns (Research memory) {
+        return researchMapping[id];
+    }
+
+    function fetchAllResearchs() public view returns (Research[] memory) {
+        Research[] memory items = new Research[](researchCount);
+        for (uint256 i = 0; i < researchCount; i++) {
+            Research storage currentItem = researchMapping[i];
+            items[i] = currentItem;
+        }
+        return items;
     }
 }

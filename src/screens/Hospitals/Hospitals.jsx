@@ -1,65 +1,103 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import styles from "./Hospitals.module.css";
 import { EHRContext } from "../../Context/EHRContext";
 const Hospitals = () => {
-	const {fetchAllHospitals, registerHospital} = useContext(EHRContext);
+	const {
+		currentAccount,
+		setCurrentAccount,
+		connectWallet,
+		fetchAllHospitals,
+		grantAccessToHospital,
+		removeAccessToHospital,
+	} = useContext(EHRContext);
 	const [searchInput, setSearchInput] = useState("");
 	const [hospitals, setHospitals] = useState([
-		{
-			hosAdd: "hosAdd",
-			name: "hospital",
-			personalAdd: "personalAdd",
-			emailId: "email@email.com",
-			contactNo: "7977005251",
-		},
-		{
-			hosAdd: "hosAdd",
-			name: "hospital",
-			personalAdd: "personalAdd",
-			emailId: "email@email.com",
-			contactNo: "7977005251",
-		},
-		{
-			hosAdd: "posAdd",
-			name: "hospital",
-			personalAdd: "personalAdd",
-			emailId: "email@email.com",
-			contactNo: "7977005251",
-		},
-		{
-			hosAdd: "hosAdd",
-			name: "hospital",
-			personalAdd: "personalAdd",
-			emailId: "email@email.com",
-			contactNo: "7977005251",
-		},
+		// {
+		// 	hosAdd: "hosAdd",
+		// 	name: "hospital",
+		// 	personalAdd: "personalAdd",
+		// 	emailId: "email@email.com",
+		// 	contactNo: "7977005251",
+		// },
+		// {
+		// 	hosAdd: "hosAdd",
+		// 	name: "hospital",
+		// 	personalAdd: "personalAdd",
+		// 	emailId: "email@email.com",
+		// 	contactNo: "7977005251",
+		// },
+		// {
+		// 	hosAdd: "posAdd",
+		// 	name: "hospital",
+		// 	personalAdd: "personalAdd",
+		// 	emailId: "email@email.com",
+		// 	contactNo: "7977005251",
+		// },
+		// {
+		// 	hosAdd: "hosAdd",
+		// 	name: "hospital",
+		// 	personalAdd: "personalAdd",
+		// 	emailId: "email@email.com",
+		// 	contactNo: "7977005251",
+		// },
 	]);
-	let displayHospitals = null;
-	const filterHospitals = (e) => {
-		console.log("button isn't required")
 
-	}
+	const fetchHospitals = useCallback(async () => {
+		const hospits = await fetchAllHospitals();
+		setHospitals(hospits);
+		console.log(hospits);
+	});
+
 	useEffect(() => {
-		const fetchHospitals = async() => {
-			const hospits = await fetchAllHospitals();
-			// setHospitals(hospits);
-			console.log(hospits);
-		};
-		fetchHospitals();
-		return () => {
-
-		};
+		fetchHospitals().catch((err) => console.log(err));
 	}, []);
+
+	const grantAccess = async (e, id) => {
+		e.preventDefault();
+		try {
+			await grantAccessToHospital(parseInt(id));
+			window.location.reload();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const removeAccess = async (e, id) => {
+		e.preventDefault();
+		try {
+			await removeAccessToHospital(parseInt(id));
+			window.location.reload();
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	return (
 		<div className={styles.hospitals_wrapper}>
 			<Sidebar value="Hospitals" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					<button className={styles.connectButton}>
-						Connect Wallet
-					</button>
+					{currentAccount === "" ? (
+						<button
+							className={styles.connectButton}
+							onClick={async (e) => {
+								e.preventDefault();
+								console.log("ehll");
+								await connectWallet();
+							}}
+						>
+							Connect Wallet
+						</button>
+					) : (
+						<button
+							className={styles.connectButton}
+							onClick={(e) => setCurrentAccount("")}
+						>
+							Logout
+						</button>
+					)}
 				</div>
 				<div className={styles.content}>
 					<div className={styles.hospitals_search}>
@@ -69,15 +107,27 @@ const Hospitals = () => {
 							value={searchInput}
 							onChange={(e) => setSearchInput(e.target.value)}
 						/>
-						<button className={styles.searchButton} onClick={(e) => filterHospitals(e)}>Search</button>
+						<button
+							className={styles.searchButton}
+							// onClick={(e) => filterHospitals(e)}
+						>
+							Search
+						</button>
 					</div>
 					<div className={styles.hospitalContainer}>
 						<div className={styles.hospitalsGrid}>
 							{hospitals &&
 								hospitals.map((hospital, id) => {
-									if (searchInput == "" || hospital.hosAdd.includes(searchInput)) {
+									if (
+										searchInput == "" ||
+										hospital.hosAdd.includes(searchInput)
+									) {
 										return (
-											<div key={id} id={id} className={styles.hosBox}>
+											<div
+												key={id}
+												id={id}
+												className={styles.hosBox}
+											>
 												<div className={styles.hosName}>
 													<span>{hospital.name}</span>
 												</div>
@@ -98,16 +148,44 @@ const Hospitals = () => {
 													<b>Mobile No:</b>{" "}
 													{hospital.contactNo}
 												</div>
-												<div className={styles.hosAddress}>
+												<div
+													className={
+														styles.hosAddress
+													}
+												>
 													<b>Address:</b>
 													<br />
 													{hospital.personalAdd}
 												</div>
-												<button
-													className={styles.grantButton}
-												>
-													Grant Access
-												</button>
+												{hospital.access === true ? (
+													<button
+														className={
+															styles.grantButton
+														}
+														onClick={(e) =>
+															removeAccess(
+																e,
+																hospital.hosAdd
+															)
+														}
+													>
+														Remove Access
+													</button>
+												) : (
+													<button
+														className={
+															styles.grantButton
+														}
+														onClick={(e) =>
+															grantAccess(
+																e,
+																hospital.hosAdd
+															)
+														}
+													>
+														Grant Access
+													</button>
+												)}
 											</div>
 										);
 									}

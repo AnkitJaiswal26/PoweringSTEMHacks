@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import Wenb3Model from "web3modal";
 
 import { EHRABI, EHRAddress } from "./constants";
+import { JsonRpcBatchProvider } from "@ethersproject/providers";
 
 const fetchContract = (signerOrProvider) =>
 	new ethers.Contract(EHRAddress, EHRABI, signerOrProvider);
@@ -42,13 +43,13 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const fetchData = useCallback(async () => {
-		await checkIfWalletConnected();
-	}, []);
+	// const fetchData = useCallback(async () => {
+	// 	await checkIfWalletConnected();
+	// }, []);
 
-	useEffect(() => {
-		fetchData().catch((err) => console.log(err));
-	}, []);
+	// useEffect(() => {
+	// 	fetchData().catch((err) => console.log(err));
+	// }, []);
 
 	const connectWallet = async () => {
 		try {
@@ -57,7 +58,7 @@ export const EHRProvider = ({ children }) => {
 			});
 			setCurrentAccount(accounts[0]);
 
-			window.location.reload();
+			// window.location.reload();
 		} catch (error) {
 			console.log("Error while connecting to wallet");
 		}
@@ -189,9 +190,45 @@ export const EHRProvider = ({ children }) => {
 	const fetchAllHospitals = async () => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const myResearchAccessList = await contract.fetchAllHospitals();
-			console.log(myResearchAccessList);
-			return myResearchAccessList;
+			var data = await contract.fetchAllHospitals();
+			for (let i = 0; i < data.length; i++) {
+				const access = await hasUserRecordAccessForHospital(
+					currentAccount,
+					data[i].hosAdd
+				);
+				data[i] = { ...data[i], access: access };
+			}
+			return data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchResearchById = async (id) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			const data = await contract.fetchResearchById(id);
+			return data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchHospitalByAddress = async (address) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			const data = await contract.fetchHospitalByAddress(address);
+			return data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchResearchOrgByAddress = async (address) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			const data = await contract.fetchOrganizationByAddress(address);
+			return data;
 		} catch (err) {
 			console.log(err);
 		}
@@ -304,9 +341,58 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
+	const hasUserRecordAccessForHospital = async (
+		userAddress,
+		hospitalAddress
+	) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			const access = await contract.hasUserRecordAccessForHospital(
+				userAddress,
+				hospitalAddress
+			);
+			return access;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const hasUserRecordAccessForResearch = async (userAddress, researchId) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			const access = await contract.hasUserRecordAccessForResearch(
+				userAddress,
+				researchId
+			);
+			return access;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchAllResearchs = async () => {
+		const provider = new ethers.providers.JsonRpcProvider();
+		const contract = await fetchContract(provider);
+
+		try {
+			var data = await contract.fetchAllResearchs();
+			for (let i = 0; i < data.length; i++) {
+				const access = await hasUserRecordAccessForResearch(
+					currentAccount,
+					data[i].id
+				);
+				data[i] = { ...data[i], access: access };
+			}
+			return data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	return (
 		<EHRContext.Provider
 			value={{
+				setCurrentAccount,
 				connectWallet,
 				currentAccount,
 				registerHospital,
@@ -328,6 +414,12 @@ export const EHRProvider = ({ children }) => {
 				getAllHospitalRecords,
 				createNewRecord,
 				createNewResearch,
+				fetchResearchById,
+				fetchHospitalByAddress,
+				fetchResearchOrgByAddress,
+				hasUserRecordAccessForHospital,
+				hasUserRecordAccessForResearch,
+				fetchAllResearchs,
 			}}
 		>
 			{children}
