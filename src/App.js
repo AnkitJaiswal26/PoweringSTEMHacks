@@ -14,13 +14,28 @@ import Research from "./screens/Research/Research";
 import HospitalDashboard from "./screens/Hospital/Dashboard/HospitalDashboard";
 import HospitalProfileScreen from "./screens/Hospital/Profile/HospitalProfile";
 import HospitalPastRecords from "./screens/Hospital/PastRecords/HospitalPastRecords";
-
+import ResearchOrgDashboard from "./screens/ResearchOrg/Dashboard/ResearchOrgDashboard";
+import ResearchOrgProfile from "./screens/ResearchOrg/Profile/ResearchOrgProfile";
+import OrgResearchs from "./screens/ResearchOrg/Researchs/OrgResearchs";
 
 const App = () => {
 	const router = createBrowserRouter([
 		{
 			path: "/",
 			element: <Dashboard />,
+		},
+		{
+			path: "/org",
+			element: <ResearchOrgDashboard />,
+		},
+		{
+			path: "/org/profile",
+			element: <ResearchOrgProfile />,
+		},
+
+		{
+			path: "/org/researchs",
+			element: <OrgResearchs />,
 		},
 		{
 			path: "/hospital",
@@ -32,7 +47,7 @@ const App = () => {
 		},
 		{
 			path: "/hospital/history",
-			element: <HospitalPastRecords/> ,
+			element: <HospitalPastRecords />,
 		},
 		{
 			path: "/hospitals",
