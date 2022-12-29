@@ -10,7 +10,6 @@ import LoginScreen from './screens/LoginScreen';
 import RegistrationScreen from './screens/RegistrationScreen';
 
 
-
 const App = () => {
   const [user, setUser] = useState();
   const handleUser = (userObj) => {
