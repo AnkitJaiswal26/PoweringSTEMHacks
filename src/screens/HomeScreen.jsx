@@ -1,15 +1,16 @@
-import { Container ,typography} from "@mui/system";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import { Container } from "@mui/system";
+import Sidebar from "../components/Sidebar/Sidebar";
 
 const HomeScreen = () => {
-    return (<>
-        <Header />
-        <Container>
-            <h3>Body goes here...</h3>
-        </Container>
-        <Footer />
-    </>);
-}
+	return (
+		<>
+			<Sidebar />
+			{/* <Header /> */}
+			<Container>
+				<h3>Body goes here...</h3>
+			</Container>
+		</>
+	);
+};
 
 export default HomeScreen;
