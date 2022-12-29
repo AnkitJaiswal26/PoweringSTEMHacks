@@ -87,9 +87,105 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
+	const registerHospital = async (name, personalAdd, emailId, mobileNo) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.registerHospital(
+				name,
+				personalAdd,
+				emailId,
+				mobileNo
+			);
+			console.log("Registered!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
+	const registerOrganization = async (name, emailId, mobileNo) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.registerResearchOrg(name, emailId, mobileNo);
+			console.log("Registered!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
+	const createNewRecord = async (
+		userAdd,
+		docName,
+		recordHash,
+		recordName,
+		issueDate,
+		testSuggested
+	) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.createNewRecord(
+				userAdd,
+				currentAccount,
+				docName,
+				recordHash,
+				recordName,
+				issueDate,
+				testSuggested
+			);
+			console.log("Added!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
+	const createNewResearch = async (name, description, cid) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.createNewResearch(name, description, cid);
+			console.log("Added!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const grantAccessToHospital = async (hospitalAddress) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.grantAccessToHospital(hospitalAddress);
+			console.log("Granted!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const removeAccessFromHospital = async (hospitalAddress) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.removeAccessFromHospital(hospitalAddress);
+			console.log("Removed!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const grantAccessToResearch = async (researchId) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.grantAccessToResearch(researchId);
+			console.log("Granted!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const removeAccessFromResearch = async (researchId) => {
+		const contract = await connectingWithSmartContract();
+		try {
+			await contract.removeAccessFromResearch(researchId);
+			console.log("Granted!");
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	const fetchAllHospitals = async () => {
 		const contract = await connectingWithSmartContract();
@@ -105,7 +201,8 @@ export const EHRProvider = ({ children }) => {
 	const fetchMyHospitalAccessList = async () => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const myResearchAccessList = await contract.fetchMyHospitalAccessList();
+			const myResearchAccessList =
+				await contract.fetchMyHospitalAccessList();
 			console.log(myResearchAccessList);
 			return myResearchAccessList;
 		} catch (err) {
@@ -116,7 +213,8 @@ export const EHRProvider = ({ children }) => {
 	const fetchMyResearchAccessList = async () => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const myResearchAccessList = await contract.fetchMyResearchAccessList();
+			const myResearchAccessList =
+				await contract.fetchMyResearchAccessList();
 			console.log(myResearchAccessList);
 			return myResearchAccessList;
 		} catch (err) {
@@ -138,7 +236,9 @@ export const EHRProvider = ({ children }) => {
 	const fetchUserDocumentsForHospital = async (userAddress) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const userDocuments = await contract.fetchUserDocumentsForHospital(userAddress);
+			const userDocuments = await contract.fetchUserDocumentsForHospital(
+				userAddress
+			);
 			console.log(userDocuments);
 			return userDocuments;
 		} catch (err) {
@@ -157,10 +257,13 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const fetchUserDocumentsForResearch = async ( userAddress,researchId) => {
+	const fetchUserDocumentsForResearch = async (userAddress, researchId) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const userDocuments = await contract.fetchUserDocumentsForResearch(userAddress,researchId);
+			const userDocuments = await contract.fetchUserDocumentsForResearch(
+				userAddress,
+				researchId
+			);
 			console.log(userDocuments);
 			return userDocuments;
 		} catch (err) {
@@ -171,7 +274,9 @@ export const EHRProvider = ({ children }) => {
 	const fetchAllUsersForResearch = async (researchId) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const userList = await contract.fetchAllUsersForResearch(researchId);
+			const userList = await contract.fetchAllUsersForResearch(
+				researchId
+			);
 			console.log(userList);
 			return userList;
 		} catch (err) {
@@ -190,26 +295,41 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const fetchUserByAddress = async (
-		userAddrress
-	) => {
+	const fetchUserByAddress = async (userAddrress) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			const user = await contract.fetchUserByAddress(
-				userAddrress
-			);
-			console.log(res);
+			const user = await contract.fetchUserByAddress(userAddrress);
 			return user;
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
-	
-
 	return (
 		<EHRContext.Provider
-			value={{ connectWallet, currentAccount }}
+			value={{
+				connectWallet,
+				currentAccount,
+				registerHospital,
+				registerUser,
+				registerOrganization,
+				fetchAllHospitals,
+				fetchAllUsersForResearch,
+				fetchMyDocuments,
+				fetchMyHospitalAccessList,
+				fetchMyResearchAccessList,
+				fetchMyResearchs,
+				fetchUserByAddress,
+				fetchUserDocumentsForHospital,
+				fetchUserDocumentsForResearch,
+				grantAccessToHospital,
+				grantAccessToResearch,
+				removeAccessFromHospital,
+				removeAccessFromResearch,
+				getAllHospitalRecords,
+				createNewRecord,
+				createNewResearch,
+			}}
 		>
 			{children}
 		</EHRContext.Provider>
