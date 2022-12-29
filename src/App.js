@@ -13,6 +13,8 @@ import Researchs from "./screens/Researchs/Researchs";
 import Research from "./screens/Research/Research";
 import HospitalDashboard from "./screens/Hospital/Dashboard/HospitalDashboard";
 import HospitalProfileScreen from "./screens/Hospital/Profile/HospitalProfile";
+import HospitalPastRecords from "./screens/Hospital/PastRecords/HospitalPastRecords";
+
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -27,6 +29,10 @@ const App = () => {
 		{
 			path: "/hospital/profile",
 			element: <HospitalProfileScreen />,
+		},
+		{
+			path: "/hospital/history",
+			element: <HospitalPastRecords/> ,
 		},
 		{
 			path: "/hospitals",
