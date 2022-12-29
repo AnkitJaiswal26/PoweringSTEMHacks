@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import styles from "./Profile.module.css";
 
-import { Container } from "@mui/system";
-import Sidebar from "../../../components/Sidebar/Sidebar";
 import HSidebar from "../../../components/HospitalSidebar/HSidebar";
 
 const HospitalProfileScreen = () => {

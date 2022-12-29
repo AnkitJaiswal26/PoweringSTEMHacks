@@ -18,6 +18,7 @@ import ResearchOrgDashboard from "./screens/ResearchOrg/Dashboard/ResearchOrgDas
 import ResearchOrgProfile from "./screens/ResearchOrg/Profile/ResearchOrgProfile";
 import OrgResearchs from "./screens/ResearchOrg/Researchs/OrgResearchs";
 import OrgResearch from "./screens/ResearchOrg/Research/OrgResearch";
+import UserRecordByAdd from "./screens/Hospital/UserRecord/FetchUserRecordByAdd";
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -37,7 +38,6 @@ const App = () => {
 			path: "/org/researchs/:researchId",
 			element: <OrgResearch />,
 		},
-
 		{
 			path: "/org/researchs",
 			element: <OrgResearchs />,
@@ -49,6 +49,9 @@ const App = () => {
 		{
 			path: "/hospital/profile",
 			element: <HospitalProfileScreen />,
+		},
+		{	path: "/hospital/users/",
+			element: <UserRecordByAdd />,
 		},
 		{
 			path: "/hospital/history",
