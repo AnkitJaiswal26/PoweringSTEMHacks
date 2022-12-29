@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import styles from "./Hospitals.module.css";
-
+import { EHRContext } from "../../Context/EHRContext";
 const Hospitals = () => {
+	const {fetchAllHospitals, registerHospital} = useContext(EHRContext);
 	const [searchInput, setSearchInput] = useState("");
 	const [hospitals, setHospitals] = useState([
 		{
@@ -34,7 +35,22 @@ const Hospitals = () => {
 			contactNo: "7977005251",
 		},
 	]);
+	let displayHospitals = null;
+	const filterHospitals = (e) => {
+		console.log("button isn't required")
 
+	}
+	useEffect(() => {
+		const fetchHospitals = async() => {
+			const hospits = await fetchAllHospitals();
+			// setHospitals(hospits);
+			console.log(hospits);
+		};
+		fetchHospitals();
+		return () => {
+
+		};
+	}, []);
 	return (
 		<div className={styles.hospitals_wrapper}>
 			<Sidebar value="Hospitals" />
@@ -53,46 +69,48 @@ const Hospitals = () => {
 							value={searchInput}
 							onChange={(e) => setSearchInput(e.target.value)}
 						/>
-						<button className={styles.searchButton}>Search</button>
+						<button className={styles.searchButton} onClick={(e) => filterHospitals(e)}>Search</button>
 					</div>
 					<div className={styles.hospitalContainer}>
 						<div className={styles.hospitalsGrid}>
 							{hospitals &&
 								hospitals.map((hospital, id) => {
-									return (
-										<div id={id} className={styles.hosBox}>
-											<div className={styles.hosName}>
-												<span>{hospital.name}</span>
-											</div>
-											<div
-												className={
-													styles.hospitalDescription
-												}
-											>
-												<b>Email Id:</b>{" "}
-												{hospital.emailId}
-											</div>
+									if (searchInput == "" || hospital.hosAdd.includes(searchInput)) {
+										return (
+											<div key={id} id={id} className={styles.hosBox}>
+												<div className={styles.hosName}>
+													<span>{hospital.name}</span>
+												</div>
+												<div
+													className={
+														styles.hospitalDescription
+													}
+												>
+													<b>Email Id:</b>{" "}
+													{hospital.emailId}
+												</div>
 
-											<div
-												className={
-													styles.hospitalDescription
-												}
-											>
-												<b>Mobile No:</b>{" "}
-												{hospital.contactNo}
+												<div
+													className={
+														styles.hospitalDescription
+													}
+												>
+													<b>Mobile No:</b>{" "}
+													{hospital.contactNo}
+												</div>
+												<div className={styles.hosAddress}>
+													<b>Address:</b>
+													<br />
+													{hospital.personalAdd}
+												</div>
+												<button
+													className={styles.grantButton}
+												>
+													Grant Access
+												</button>
 											</div>
-											<div className={styles.hosAddress}>
-												<b>Address:</b>
-												<br />
-												{hospital.personalAdd}
-											</div>
-											<button
-												className={styles.grantButton}
-											>
-												Grant Access
-											</button>
-										</div>
-									);
+										);
+									}
 								})}
 						</div>
 					</div>
