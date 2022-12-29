@@ -8,6 +8,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Hospitals from "./screens/Hospitals/Hospitals";
 import FetchMyDocuments from './screens/FetchMyDocuments';
+import PastHistory from './screens/PastHistory/PastHistory';
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const App = () => {
 		{
 			path: "/profile",
 			element: <ProfileScreen />,
+		},
+		{
+			path: "/history",
+			element: <PastHistory />,
 		},
     {
       path:"/fetchmydocs",
