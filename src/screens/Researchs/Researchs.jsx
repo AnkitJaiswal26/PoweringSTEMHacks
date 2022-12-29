@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import styles from "./Researchs.module.css";
+import { useNavigate } from "react-router-dom";
 
 const Researchs = () => {
 	const [searchInput, setSearchInput] = useState("");
+	const navigate = useNavigate();
 	const [researchs, setResearchs] = useState([
 		{
+			id: 1,
 			orgAdd: "orgadd",
 			name: "Research Paper",
 			description:
@@ -13,6 +16,7 @@ const Researchs = () => {
 			cid: "cid",
 		},
 		{
+			id: 2,
 			orgAdd: "orgadd",
 			name: "Research Paper",
 			description:
@@ -20,6 +24,7 @@ const Researchs = () => {
 			cid: "cid",
 		},
 		{
+			id: 3,
 			orgAdd: "orgadd",
 			name: "Research Paper",
 			description:
@@ -27,6 +32,7 @@ const Researchs = () => {
 			cid: "cid",
 		},
 		{
+			id: 4,
 			orgAdd: "orgadd",
 			name: "Research Paper",
 			description:
@@ -38,11 +44,16 @@ const Researchs = () => {
 	const [filteredData, setFilteredData] = useState(researchs);
 
 	const setFilter = () => {
-		setFilteredData(
-			researchs.filter((item) => {
-				return item.orgAdd === searchInput;
-			})
-		);
+		if (searchInput === "") {
+			console.log("sdfkjl");
+			setFilteredData(researchs);
+		} else {
+			setFilteredData(
+				researchs.filter((item) => {
+					return item.orgAdd === searchInput;
+				})
+			);
+		}
 	};
 
 	return (
@@ -75,8 +86,15 @@ const Researchs = () => {
 							{filteredData &&
 								filteredData.map((research, id) => {
 									return (
-										<div id={id} className={styles.hosBox}>
-											<div className={styles.hosName}>
+										<div key={id} className={styles.hosBox}>
+											<div
+												className={styles.hosName}
+												onClick={(e) => {
+													navigate(
+														`/researchs/${research.id}`
+													);
+												}}
+											>
 												<span>{research.name}</span>
 											</div>
 											<div
