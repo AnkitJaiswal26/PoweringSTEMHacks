@@ -42,7 +42,7 @@ contract EHR {
         string docName;
         string recordHash;
         string recordName;
-        uint256 issueDate;
+        string issueDate;
         string testSuggested;
     }
 
@@ -132,7 +132,7 @@ contract EHR {
         string memory docName,
         string memory recordHash,
         string memory recordName,
-        uint256 issueDate,
+        string memory issueDate,
         string memory testSuggested
     ) public {
         recordMapping[recordCount++] = Record(

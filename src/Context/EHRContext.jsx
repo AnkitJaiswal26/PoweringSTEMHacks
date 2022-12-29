@@ -124,7 +124,6 @@ export const EHRProvider = ({ children }) => {
 		try {
 			await contract.createNewRecord(
 				userAdd,
-				currentAccount,
 				docName,
 				recordHash,
 				recordName,

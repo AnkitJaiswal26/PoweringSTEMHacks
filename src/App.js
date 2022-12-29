@@ -1,41 +1,46 @@
-import React, {useState} from 'react';
-import "./App.css"
-import Button from '@mui/material/Button';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegistrationScreen from './screens/RegistrationScreen';
-
+import React, { useState } from "react";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import RegistrationScreen from "./screens/RegistrationScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import Dashboard from "./screens/Dashboard/Dashboard";
+import Hospitals from "./screens/Hospitals/Hospitals";
+import FetchMyDocuments from './screens/FetchMyDocuments';
 
 const App = () => {
-  const [user, setUser] = useState();
-  const handleUser = (userObj) => {
-    setUser(userObj);
-  }
-  const router = createBrowserRouter([
+	const router = createBrowserRouter([
+		{
+			path: "/",
+			element: <Dashboard />,
+		},
+		{
+			path: "/hospitals",
+			element: <Hospitals />,
+		},
+		{
+			path: "/register",
+			element: <RegistrationScreen />,
+		},
+		{
+			path: "/login",
+			element: <LoginScreen />,
+		},
+		{
+			path: "/profile",
+			element: <ProfileScreen />,
+		},
     {
-      path: "/",
-      element: <HomeScreen user={user} hadleUser={handleUser}/>,
-    },
-    {
-      path: "/register",
-      element: <RegistrationScreen />,
-    },
-    {
-      path: "/login",
-      element: <LoginScreen />,
-    },
-    {
-      path:"/profile",
-      element: <h1>Profile</h1>
+      path:"/fetchmydocs",
+      element: <FetchMyDocuments />
     }
-  ]);
-  return (<>
-     <RouterProvider router={router} />
-  </>);
-}
+	]);
+	return (
+		<>
+			<RouterProvider router={router} />
+		</>
+	);
+};
 
 export default App;
