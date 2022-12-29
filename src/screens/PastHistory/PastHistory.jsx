@@ -40,22 +40,6 @@ const Hospitals = () => {
 		},
 	]);
 
-	const [filteredHistory, setFilteredHistory] = useState(history);
-
-
-	const handleSearch = () => {
-    if(searchInput.length > 0)
-    {     
-     const searchData= history.filter((item)=> item.recordName.toLowerCase().includes(searchInput));
-     setFilteredHistory(searchData);
-		 console.log(searchData,"search")
-    } 
-		else {
-		console.log(searchInput,"searchedd")
-			setFilteredHistory(history)
-    }
-  }
-
 	return (
 		<div className={styles.hospitals_wrapper}>
 			<Sidebar value="Past History" />
@@ -72,52 +56,55 @@ const Hospitals = () => {
 							className={`px-5 py-2 sm:rounded-md font-medium bg-gray-100 placeholder-gray-500 text-sm border focus:outline-none focus:border-gray-400 focus:bg-white`}
 							placeholder="Search by address"
 							value={searchInput}
-							onChange={(e) => {
-								setSearchInput(e.target.value);
-								handleSearch();
-							}}
+							onChange={(e) => {setSearchInput(e.target.value)}}
 						/>
-						<button className={styles.searchButton}>Search</button>
+						<button
+							className={styles.searchButton}
+						>
+							Search
+						</button>
 					</div>
 					<div className={styles.hospitalContainer}>
 						<div className={styles.hospitalsGrid}>
-							{filteredHistory &&
-								filteredHistory.map((recordHistory, id) => {
-									return (
-										<div id={id} className={styles.hosBox}>
-											<div className={styles.hosName}>
-												<span>{recordHistory.recordName}</span>
-											</div>
-											<hr style={{ marginBottom: "10px" }}></hr>
-											<div
-												className={
-													styles.hospitalDescription
-												}
-											>
-												<b>Doctor Name:</b>{" "}
-												{recordHistory.docName}
-											</div>
+							{history &&
+								history.map((recordHistory, id) => {
+									if (searchInput == "" || recordHistory.recordName.toLowerCase().includes(searchInput)) {
+										return (
+											<div id={id} className={styles.hosBox}>
+												<div className={styles.hosName}>
+													<span>{recordHistory.recordName}</span>
+												</div>
+												<hr style={{ marginBottom: "10px" }}></hr>
+												<div
+													className={
+														styles.hospitalDescription
+													}
+												>
+													<b>Doctor Name:</b>{" "}
+													{recordHistory.docName}
+												</div>
 
-											<div
-												className={
-													styles.hospitalDescription
-												}
-											>
-												<b>Test Suggested:</b>{" "}
-												{recordHistory.testSuggested}
+												<div
+													className={
+														styles.hospitalDescription
+													}
+												>
+													<b>Test Suggested:</b>{" "}
+													{recordHistory.testSuggested}
+												</div>
+												<div className={styles.hosAddress}>
+													<b>Issue Date</b>
+													<br />
+													{recordHistory.issueDate}
+												</div>
+												<button
+													className={styles.grantButton}
+												>
+													View Report
+												</button>
 											</div>
-											<div className={styles.hosAddress}>
-												<b>Issue Date</b>
-												<br />
-												{recordHistory.issueDate}
-											</div>
-											<button
-												className={styles.grantButton}
-											>
-												View Report
-											</button>
-										</div>
-									);
+										);
+									}
 								})}
 						</div>
 					</div>

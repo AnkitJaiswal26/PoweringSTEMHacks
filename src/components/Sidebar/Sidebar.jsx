@@ -5,7 +5,6 @@ import styles from "./Sidebar.module.css";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 
 const Sidebar = ({ value }) => {
-	console.log(value);
 	return (
 		<div className={styles.sidebar_wrapper}>
 			<div className={styles.logoDiv}>EHRecord</div>
@@ -14,7 +13,6 @@ const Sidebar = ({ value }) => {
 			<div>
 				<ul className={styles.sidebarList}>
 					{userSidebar.map((item, index) => {
-						console.log(item.name, item.name === value);
 						return (
 							<li key={item.name}>
 								<div

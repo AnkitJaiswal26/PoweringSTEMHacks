@@ -7,8 +7,10 @@ import RegistrationScreen from "./screens/RegistrationScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import Dashboard from "./screens/Dashboard/Dashboard";
 import Hospitals from "./screens/Hospitals/Hospitals";
-import FetchMyDocuments from './screens/FetchMyDocuments';
 import PastHistory from './screens/PastHistory/PastHistory';
+import FetchMyDocuments from "./screens/FetchMyDocuments";
+import Researchs from "./screens/Researchs/Researchs";
+import Research from "./screens/Research/Research";
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -19,6 +21,14 @@ const App = () => {
 		{
 			path: "/hospitals",
 			element: <Hospitals />,
+		},
+		{
+			path: "/researchs",
+			element: <Researchs />,
+		},
+		{
+			path: "/researchs/:researchId",
+			element: <Research />,
 		},
 		{
 			path: "/register",
@@ -36,16 +46,20 @@ const App = () => {
 			path: "/history",
 			element: <PastHistory />,
 		},
-    {
-      path:"/fetchmydocs",
-      element: <FetchMyDocuments />
-    }
+		{
+			path: "/fetchmydocs",
+			element: <FetchMyDocuments />
+		},
+		{
+			path: "/fetchmydocs",
+			element: <FetchMyDocuments />,
+		},
 	]);
-	return (
-		<>
-			<RouterProvider router={router} />
-		</>
-	);
+return (
+	<>
+		<RouterProvider router={router} />
+	</>
+);
 };
 
 export default App;
