@@ -20,7 +20,7 @@ import OrgResearchs from "./screens/ResearchOrg/Researchs/OrgResearchs";
 import OrgResearch from "./screens/ResearchOrg/Research/OrgResearch";
 import UserRecordByAdd from "./screens/Hospital/UserRecord/FetchUserRecordByAdd";
 import NewRecord from "./screens/Hospital/NewRecord/NewRecord"
-
+import NewResearch from "./screens/ResearchOrg/NewResearch/NewResearch";
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -40,6 +40,11 @@ const App = () => {
 			path: "/org/researchs/:researchId",
 			element: <OrgResearch />,
 		},
+    {
+      path: "createNewResearch",
+      element:<NewResearch />
+    },
+
 		{
 			path: "/org/researchs",
 			element: <OrgResearchs />,
