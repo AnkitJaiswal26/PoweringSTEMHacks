@@ -1,48 +1,39 @@
 import React, { useState } from "react";
-import HSidebar from "../../../components/HospitalSidebar/HSidebar";
 import RSidebar from "../../../components/ReserachOrgSidebar/RSidebar";
 import styles from "./OrgResearchs.module.css";
 
 const OrgResearchs = () => {
 	const [searchInput, setSearchInput] = useState("");
-	const [history, setHistory] = useState([
+	const [researchs, setResearchs] = useState([
 		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Blood Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
+			id: "id",
+			orgAdd: "orgAdd",
+			name: "Cancer Resesarch",
+			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Skin Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
+			id: "id",
+			orgAdd: "orgAdd",
+			name: "Skin Resesarch",
+			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Blood Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
+			id: "id",
+			orgAdd: "orgAdd",
+			name: "Cancer Resesarch",
+			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Hair Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
+			id: "id",
+			orgAdd: "orgAdd",
+			name: "Cancer Resesarch",
+			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 	]);
 
 	return (
 		<div className={styles.hospitals_wrapper}>
-			<RSidebar value="Past History" />
+			<RSidebar value="Researchs" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
@@ -64,11 +55,11 @@ const OrgResearchs = () => {
 					</div>
 					<div className={styles.hospitalContainer}>
 						<div className={styles.hospitalsGrid}>
-							{history &&
-								history.map((recordHistory, id) => {
+							{researchs &&
+								researchs.map((research, id) => {
 									if (
 										searchInput == "" ||
-										recordHistory.recordName
+										research.recordName
 											.toLowerCase()
 											.includes(searchInput)
 									) {
@@ -80,7 +71,7 @@ const OrgResearchs = () => {
 												<div className={styles.hosName}>
 													<span>
 														{
-															recordHistory.recordName
+															research.name
 														}
 													</span>
 												</div>
@@ -94,35 +85,26 @@ const OrgResearchs = () => {
 														styles.hospitalDescription
 													}
 												>
-													<b>Doctor Name:</b>{" "}
-													{recordHistory.docName}
+													<b>Research id:</b>{" "}
+													{research.id}
 												</div>
-
+												
 												<div
 													className={
 														styles.hospitalDescription
 													}
 												>
-													<b>Test Suggested:</b>{" "}
+													<b>Description:</b>{" "}
 													{
-														recordHistory.testSuggested
+														research.description
 													}
-												</div>
-												<div
-													className={
-														styles.hosAddress
-													}
-												>
-													<b>Issue Date</b>
-													<br />
-													{recordHistory.issueDate}
 												</div>
 												<button
 													className={
 														styles.grantButton
 													}
 												>
-													View Report
+													View Research
 												</button>
 											</div>
 										);
