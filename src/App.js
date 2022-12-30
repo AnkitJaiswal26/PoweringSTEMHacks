@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomeScreen from "./screens/HomeScreen";
+import HomeScreen from "./screens/Home/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import RegistrationScreen from "./screens/RegistrationScreen";
 import ProfileScreen from "./screens/Profiles/Profile";
@@ -26,6 +26,10 @@ const App = () => {
 	const router = createBrowserRouter([
 		{
 			path: "/",
+			element: <HomeScreen />,
+		},
+		{
+			path: "/user/dashboard",
 			element: <Dashboard />,
 		},
 		{
@@ -40,17 +44,16 @@ const App = () => {
 			path: "/org/researchs/:researchId",
 			element: <OrgResearch />,
 		},
-    {
-      path: "createNewResearch",
-      element:<NewResearch />
-    },
-
+		{
+			path: "createNewResearch",
+			element:<NewResearch />
+		},
 		{
 			path: "/org/researchs",
 			element: <OrgResearchs />,
 		},
 		{
-			path: "/hospital",
+			path: "/hospital/dashboard",
 			element: <HospitalDashboard />,
 		},
 		{

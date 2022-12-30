@@ -8,7 +8,7 @@ import styles from "./Sidebar.module.css";
 export const userSidebar = [
 	{
 		name: "Dashboard",
-		url: "/",
+		url: "/user/dashboard",
 		icon: <DashboardIcon className={styles.listIcon} />,
 	},
 	{

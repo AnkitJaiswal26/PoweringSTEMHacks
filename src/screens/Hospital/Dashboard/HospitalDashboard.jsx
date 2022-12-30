@@ -9,7 +9,7 @@ const HospitalDashboard = () => {
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					<button className={styles.connectButton}>
+					<button className={styles.connectButton }>
 						Connect Wallet
 					</button>
 				</div>
