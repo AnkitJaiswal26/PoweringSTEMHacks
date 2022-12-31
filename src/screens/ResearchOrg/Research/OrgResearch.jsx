@@ -107,11 +107,11 @@ const OrgResearch = () => {
 								</h3>
 								<p className={styles.researchDescription}>
 									Users required:{" "}
-									{research.usersRequired.toNumber()}
+									{research?.usersRequired?.toNumber()}
 								</p>
 								<p className={styles.researchDescription}>
 									Current Users:{" "}
-									{research.currentUsers.toNumber()}
+									{research?.currentUsers?.toNumber()}
 								</p>
 								<p className={styles.researchDescription}>
 									<b>Description: </b>

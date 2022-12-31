@@ -148,7 +148,7 @@ const RegisterHospital = ({ modalIsOpen, closeModal }) => {
                 <div>
                   <a
                     href="/org"
-                    className="w-full inline-flex justify-center py-2 px-4 border border-green-300 rounded-md shadow-sm bg-white text-sm font-medium text-green-500 hover:bg-green-50"
+                    className="w-full inline-flex justify-center py-2 px-4 border border-red-300 rounded-md shadow-sm bg-white text-sm font-medium text-red-500 hover:bg-red-50"
                   >
                     
                     <PublicIcon/> <span className="px-1 text-base">Orgnization</span>
@@ -157,7 +157,7 @@ const RegisterHospital = ({ modalIsOpen, closeModal }) => {
                 <div>
                   <a
                     href="/user/profile"
-                    className="w-full inline-flex justify-center py-2 px-4 border border-green-300 rounded-md shadow-sm bg-white text-sm font-medium text-green-500 hover:bg-green-50"
+                    className="w-full inline-flex justify-center py-2 px-4 border border-indigo-300 rounded-md shadow-sm bg-white text-sm font-medium text-indigo-500 hover:bg-indigo-50"
                   >
                     
                     <PersonIcon /> <span className="px-1 text-base">User</span>

@@ -34,3 +34,6 @@ typechain-types
 cache
 artifacts
 
+# Account 2 : USER
+# Account 3 : HOSPITAL
+# Account 4 : ORG

@@ -126,7 +126,7 @@ const OrgResearchs = () => {
 												}
 											>
 												<b>Description:</b>{" "}
-												{research.description.length >=
+												{research && research.description.length >=
 												200
 													? research.description.substring(
 															1,
