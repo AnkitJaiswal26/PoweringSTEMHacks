@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
+import "hardhat/console.sol";
+
 contract EHR {
     address owner;
 
@@ -63,6 +65,10 @@ contract EHR {
     mapping(address => uint256) hospitalAddressMapping;
     mapping(address => uint256) researchOrgAddressMapping;
 
+    mapping(address => bool) existingUsers;
+    mapping(address => bool) existingHospitals;
+    mapping(address => bool) existingOrganizations;
+
     mapping(uint256 => uint256[]) userToHospitalAccessList;
 
     mapping(uint256 => uint256[]) userToResearchAccessList;
@@ -95,6 +101,7 @@ contract EHR {
             dob
         );
         userAddressMapping[msg.sender] = userCount - 1;
+        existingUsers[msg.sender] = true;
     }
 
     function registerHospital(
@@ -111,6 +118,7 @@ contract EHR {
             mobileNo
         );
         hospitalAddressMapping[msg.sender] = hospitalCount - 1;
+        existingHospitals[msg.sender] = true;
     }
 
     function registerResearchOrg(
@@ -125,6 +133,18 @@ contract EHR {
             mobileNo
         );
         researchOrgAddressMapping[msg.sender] = researchOrgCount - 1;
+        existingOrganizations[msg.sender] = true;
+    }
+
+    function checkRole() public view returns (uint256) {
+        if (existingUsers[msg.sender] == true) {
+            return 1;
+        } else if (existingHospitals[msg.sender] == true) {
+            return 2;
+        } else if (existingOrganizations[msg.sender] == true) {
+            return 3;
+        }
+        return 0;
     }
 
     // Create record/research
@@ -298,6 +318,9 @@ contract EHR {
                 itemCount += 1;
             }
         }
+
+        console.log(itemCount);
+        console.log(recordCount);
 
         Record[] memory items = new Record[](itemCount);
         for (uint256 i = 0; i < recordCount; i++) {

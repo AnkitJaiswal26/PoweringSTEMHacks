@@ -1,35 +1,58 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import RSidebar from "../../../components/ReserachOrgSidebar/RSidebar";
+import { EHRContext } from "../../../Context/EHRContext";
 import styles from "./OrgResearchs.module.css";
 
 const OrgResearchs = () => {
+	const { currentAccount, fetchMyResearchs, checkIfWalletConnected } =
+		useContext(EHRContext);
+
+	useEffect(() => {
+		checkIfWalletConnected();
+	}, []);
+
 	const [searchInput, setSearchInput] = useState("");
 	const [researchs, setResearchs] = useState([
 		{
 			id: "id",
 			orgAdd: "orgAdd",
 			name: "Cancer Resesarch",
-			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
+			description:
+				"Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 		{
 			id: "id",
 			orgAdd: "orgAdd",
 			name: "Skin Resesarch",
-			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
+			description:
+				"Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 		{
 			id: "id",
 			orgAdd: "orgAdd",
 			name: "Cancer Resesarch",
-			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
+			description:
+				"Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 		{
 			id: "id",
 			orgAdd: "orgAdd",
 			name: "Cancer Resesarch",
-			description: "Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
+			description:
+				"Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 	]);
+
+	const fetchData = useCallback(async () => {
+		console.log("hello");
+		const data = await fetchMyResearchs();
+		console.log(data);
+		setResearchs(data);
+	});
+
+	useEffect(() => {
+		fetchData();
+	}, [currentAccount]);
 
 	return (
 		<div className={styles.hospitals_wrapper}>
@@ -69,35 +92,27 @@ const OrgResearchs = () => {
 												className={styles.hosBox}
 											>
 												<div className={styles.hosName}>
-													<span>
-														{
-															research.name
-														}
-													</span>
+													<span>{research.name}</span>
 												</div>
 												<hr
 													style={{
 														marginBottom: "10px",
 													}}
 												></hr>
-												<div
-													className={
-														styles.hospitalDescription
-													}
-												>
-													<b>Research id:</b>{" "}
-													{research.id}
-												</div>
-												
+
 												<div
 													className={
 														styles.hospitalDescription
 													}
 												>
 													<b>Description:</b>{" "}
-													{
-														research.description
-													}
+													{research.description
+														.length >= 200
+														? research.description.substring(
+																1,
+																200
+														  ) + "..."
+														: research.description}
 												</div>
 												<button
 													className={

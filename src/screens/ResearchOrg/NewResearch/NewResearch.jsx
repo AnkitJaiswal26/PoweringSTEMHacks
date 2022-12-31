@@ -1,126 +1,146 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { EHRContext } from "../../../Context/EHRContext";
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Sidebar from '../../../components/HospitalSidebar/HSidebar';
-import styles from './NewResearch.module.css'
-import { Snackbar } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
-const theme = createTheme();
-export default () => {
-    // name, 
-    //description, 
-    //cid
-    const [NewResearch, setNewResearch] = useState({
-    name:'' , 
-    description:'' , 
-    cid:'' ,
-    });
-    const { createNewResearch } = useContext(EHRContext);
-    const [uploading, setUploading] = useState("false");
-    const [open, setOpen] = useState(false);
-    const handleClose = (event, reason) => {
-        setOpen(false);
-    };
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const RecordObj = {
-            name: data.get('name'),
-            description: data.get('description'),
-            cid: data.get('cid'),
-        }
-        setNewResearch(RecordObj);
-        console.log(RecordObj);
+import styles from "./NewResearch.module.css";
+import RSidebar from "../../../components/ReserachOrgSidebar/RSidebar";
 
-        let res = await createNewResearch(NewResearch.name,NewResearch.docName, NewResearch.description, NewResearch.cid);
-        setOpen(true);
-    };
-    let button;
-    if (uploading == "false") {
-        button = <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-        >
-            Create Record
-        </Button>
-    } else {
-        button = <CircularProgress />
-    }
+const NewResearch = () => {
+	const { createNewResearch, uploadFilesToIPFS, checkIfWalletConnected } =
+		useContext(EHRContext);
 
-    return (
-        <div className={styles.hospitals_wrapper}>
-            <Snackbar
-                open={open}
-                autoHideDuration={600}
-                onClose={handleClose}
-                message="Note archived"
-            />
-            <Sidebar value="Profile" />
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography component="h1" variant="h5">
-                            Add New Reseach
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        autocomplete="Research Name"
-                                        name="name"
-                                        required
-                                        fullWidth
-                                        id="name"
-                                        label="Reseach Name"
-                                        autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="cid"
-                                        label="cid"
-                                        name="cid"
-                                        autoComplete="cid"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        multiline
-                                        rows={2}
-                                        autocomplete="Description"
-                                        name="description"
-                                        required
-                                        fullWidth
-                                        id="description"
-                                        label="description"
-                                    />
-                                </Grid>
-                            </Grid>
-                            {button}
+	useEffect(() => {
+		checkIfWalletConnected();
+	});
 
-                        </Box>
-                    </Box>
-                </Container>
-            </ThemeProvider>
-        </div>
-    );
+	const uploadRecord = useRef(null);
+
+	const [recordName, setRecordName] = useState("");
+	const [description, setDescription] = useState("");
+	const [researchFile, setResearchFile] = useState(null);
+	const [researchName, setResearchName] = useState("");
+	const [testSuggested, setTestSuggested] = useState("");
+
+	const handlePosterUploadImage = (e) => {
+		e.preventDefault();
+		uploadRecord.current.click();
+	};
+
+	const handlePosterFileChange = (e) => {
+		setRecordName(e.target.files[0].name);
+		setResearchFile(e.target.files);
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		console.log("Hello");
+		try {
+			console.log(researchFile);
+			// const myRenamedFile = new File([researchFile[0]]/, "mainImage.jpg");
+			// console.log(myRenamedFile);
+			const cid = await uploadFilesToIPFS(researchFile);
+			console.log(cid);
+
+			await createNewResearch(researchName, description, cid);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	let button;
+
+	return (
+		<div className={styles.dashboard_wrapper}>
+			<RSidebar value="NewResearch" />
+			<div className={styles.main_wrapper}>
+				<div className={styles.navBar}>
+					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
+					{/* {currentAccount === "" ? (
+						<button
+							className={styles.connectButton}
+							onClick={async (e) => {
+								e.preventDefault();
+								console.log("ehll");
+								await connectWallet();
+							}}
+						>
+							Connect Wallet
+						</button>
+					) : (
+						<button
+							className={styles.connectButton}
+							onClick={(e) => setCurrentAccount("")}
+						>
+							Logout
+						</button>
+					)} */}
+				</div>
+				<div>
+					<div className={`${styles.contentBox}`}>
+						<h2>Create a new Research</h2>
+					</div>
+					<div className={`${styles.formBox}`}>
+						<form onSubmit={handleSubmit}>
+							<h2 className={`${styles.heading}`}>
+								Fill Details
+							</h2>
+
+							<div className={styles.inputGroup}>
+								<label className={`${styles.inputLabel}`}>
+									Research Name
+								</label>
+								<input
+									className={styles.input}
+									type="text"
+									placeholder="Enter Research Name"
+									value={researchName}
+									onChange={(e) =>
+										setResearchName(e.target.value)
+									}
+								/>
+							</div>
+							<div className={styles.inputGroup}>
+								<label className={`${styles.inputLabel}`}>
+									Description
+								</label>
+								<textarea
+									className={styles.input}
+									type="text"
+									placeholder="Enter description"
+									value={description}
+									onChange={(e) =>
+										setDescription(e.target.value)
+									}
+								></textarea>
+							</div>
+							<div className={styles.inputGroupLast}>
+								<label className={`${styles.inputLabel}`}>
+									Upload Research Poster
+								</label>
+								<button
+									onClick={handlePosterUploadImage}
+									className={styles.inputCombined}
+								></button>
+								<input
+									onChange={handlePosterFileChange}
+									className={` ${styles.fileInput}`}
+									type="file"
+									placeholder={""}
+								/>
+							</div>
+
+							<div className={styles.button}>
+								<a
+									className={styles.anchor}
+									onClick={handleSubmit}
+									href="/"
+								>
+									<span className="ml-4">Create</span>
+								</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
+
+export default NewResearch;

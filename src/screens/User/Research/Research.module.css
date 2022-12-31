@@ -1,4 +1,4 @@
-.dashboard_wrapper {
+.researchs_wrapper {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
@@ -11,6 +11,7 @@
 	width: calc(100% - 240px);
 	overflow: hidden;
 	overflow-y: scroll;
+	background-color: #f9fbff;
 }
 
 .navBar {
@@ -41,7 +42,7 @@
 }
 
 .content {
-	padding: 20px;
+	padding: 50px;
 }
 
 .hospitals_search {
@@ -60,49 +61,33 @@
 	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-.hospitalsGrid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-	column-gap: 1rem;
-	row-gap: 1rem;
-}
-
-.hosBox {
+.researchContainer {
 	display: flex;
-	flex-direction: column;
-	background-color: #0087ca;
-	color: white;
-	padding: 20px 1rem;
-	border-radius: 4px;
-	transition: all ease 0.5s;
+	flex-direction: row;
 }
 
-.hosBox:hover {
-	background-color: #017dd5;
-	transform: translateY(-4px);
-	box-shadow: 1px 1px 5px #1da0ff;
+.researchDetailsContainer {
+	width: 60%;
 }
 
-.hosName {
-	cursor: pointer;
-	font-weight: bold;
-	margin-bottom: 10px;
+.researchName {
+	font-size: 25px;
+	font-weight: 600;
+	margin-bottom: 20px;
 }
 
-.hosName:hover {
-	border-bottom: 1px solid #0087ca;
+.researchDescription {
+	font-size: 16px;
+	color: #818387;
 }
 
-.hospitalDescription {
-	font-size: 14px;
-	color: #dbdde4;
-	margin-bottom: 0;
+.researchImage {
+	padding-left: 50px;
 }
 
-.hosAddress {
-	margin-top: 5px;
-	font-size: 14px;
-	color: #dbdde4;
+.researchImage img {
+	width: 100%;
+	margin-bottom: 20px;
 }
 
 .grantButton {

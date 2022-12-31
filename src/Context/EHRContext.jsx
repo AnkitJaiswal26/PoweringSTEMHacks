@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import Wenb3Model from "web3modal";
-
+import { Web3Storage } from "web3.storage";
 import { EHRABI, EHRAddress } from "./constants";
-import { JsonRpcBatchProvider } from "@ethersproject/providers";
 
 const fetchContract = (signerOrProvider) =>
 	new ethers.Contract(EHRAddress, EHRABI, signerOrProvider);
@@ -24,6 +23,10 @@ const connectingWithSmartContract = async () => {
 export const EHRContext = React.createContext();
 
 export const EHRProvider = ({ children }) => {
+	const web3AccessToken =
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEFjNjkxYTc1NTFBODU3MzIzMTE2MWZEMzUyMUFEQ0MyNWFEQzIyOWMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzE3ODk2NzI1MjUsIm5hbWUiOiJIYWNrQU1pbmVycyJ9._DQqNUq6VZ-Zg86ol1YHB0L4sWFtowhD6SSdSIRR23Y";
+	const web3Storage = new Web3Storage({ token: web3AccessToken });
+
 	const [currentAccount, setCurrentAccount] = useState("");
 
 	const checkIfWalletConnected = async () => {
@@ -43,14 +46,6 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	// const fetchData = useCallback(async () => {
-	// 	await checkIfWalletConnected();
-	// }, []);
-
-	// useEffect(() => {
-	// 	fetchData().catch((err) => console.log(err));
-	// }, []);
-
 	const connectWallet = async () => {
 		try {
 			const accounts = await window.ethereum.request({
@@ -58,7 +53,7 @@ export const EHRProvider = ({ children }) => {
 			});
 			setCurrentAccount(accounts[0]);
 
-			// window.location.reload();
+			window.location.reload();
 		} catch (error) {
 			console.log("Error while connecting to wallet");
 		}
@@ -191,11 +186,21 @@ export const EHRProvider = ({ children }) => {
 		const contract = await connectingWithSmartContract();
 		try {
 			var data = await contract.fetchAllHospitals();
+			var result = [];
+
 			for (let i = 0; i < data.length; i++) {
 				const access = await hasUserRecordAccessForHospital(
 					currentAccount,
 					data[i].hosAdd
 				);
+				result.push({
+					name: data[i].name,
+					emailId: data[i].emailId,
+					contactNo: data[i].contactNo,
+					hosAdd: data[i].hosAdd,
+					personalAdd: data[i].personalAdd,
+					access: access,
+				});
 				data[i] = { ...data[i], access: access };
 			}
 			return data;
@@ -260,6 +265,7 @@ export const EHRProvider = ({ children }) => {
 
 	const fetchMyDocuments = async () => {
 		const contract = await connectingWithSmartContract();
+		await checkIfWalletConnected();
 		try {
 			const myRecords = await contract.fetchMyDocuments();
 			console.log(myRecords);
@@ -376,14 +382,43 @@ export const EHRProvider = ({ children }) => {
 
 		try {
 			var data = await contract.fetchAllResearchs();
+			console.log(data);
+			var result = [];
 			for (let i = 0; i < data.length; i++) {
 				const access = await hasUserRecordAccessForResearch(
 					currentAccount,
 					data[i].id
 				);
-				data[i] = { ...data[i], access: access };
+				result.push({
+					id: data[i].id.toNumber(),
+					name: data[i].name,
+					description: data[i].description,
+					orgAdd: data[i].orgAdd,
+					cid: data[i].cid,
+					access: access,
+				});
 			}
 			return data;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const uploadFilesToIPFS = async (file) => {
+		try {
+			const cid = await web3Storage.put(file);
+			return cid;
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const checkRole = async (account) => {
+		try {
+			const contract = await connectingWithSmartContract();
+			const data = await contract.checkRole();
+			console.log(data);
+			return data.toNumber();
 		} catch (err) {
 			console.log(err);
 		}
@@ -392,12 +427,14 @@ export const EHRProvider = ({ children }) => {
 	return (
 		<EHRContext.Provider
 			value={{
+				checkRole,
 				setCurrentAccount,
+				checkIfWalletConnected,
 				connectWallet,
 				currentAccount,
 				registerHospital,
 				registerUser,
-				connectWallet,
+
 				registerOrganization,
 				fetchAllHospitals,
 				//users
@@ -414,7 +451,6 @@ export const EHRProvider = ({ children }) => {
 				fetchUserDocumentsForHospital,
 				fetchUserByAddress,
 				getAllHospitalRecords,
-				currentAccount,
 				//record
 				createNewResearch,
 				fetchResearchById,
@@ -423,6 +459,7 @@ export const EHRProvider = ({ children }) => {
 				hasUserRecordAccessForHospital,
 				hasUserRecordAccessForResearch,
 				fetchAllResearchs,
+				uploadFilesToIPFS,
 			}}
 		>
 			{children}

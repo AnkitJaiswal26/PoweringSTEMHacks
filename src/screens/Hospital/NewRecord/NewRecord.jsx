@@ -1,177 +1,164 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { EHRContext } from "../../../Context/EHRContext";
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Sidebar from '../../../components/HospitalSidebar/HSidebar';
-import styles from './NewRecord.module.css';
-import { LinearProgress, Snackbar } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
-const theme = createTheme();
-export default () => {
-    // userAdd,
-    // docName,
-    // recordHash,
-    // recordName,
-    // issueDate,
-    // testSuggested
-    const [newRecord, setNewRecord] = useState({
-        userAdd: '',
-        docName: '',
-        recordHash: '',
-        recordName: '',
-        issueDate: '',
-        testSuggested: '',
-    });
-    const [IssueDate, setIssueDate] = useState(null);
-    const { createNewRecord } = useContext(EHRContext);
-    const [uploading, setUploading] = useState("false");
-    const [open, setOpen] = useState(false);
-    const handleClose = (event, reason) => {
-        setOpen(false);
-    };
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        const RecordObj = {
-            recordName: data.get('recordName'),
-            docName: data.get('docName'),
-            userAdd: data.get('userAdd'),
-            recordHash: data.get('recordHash'),
-            issueDate: IssueDate,
-            testSuggested: data.get('testSuggested'),
-        }
-        setNewRecord(RecordObj);
-        console.log(RecordObj);
+import styles from "./NewRecord.module.css";
+import HSidebar from "../../../components/HospitalSidebar/HSidebar";
 
-        let res = await createNewRecord(newRecord.userAdd,newRecord.docName, newRecord.recordHash, newRecord.recordName, newRecord.issueDate, newRecord.testSuggested);
-        setOpen(true);
+const NewRecord = () => {
+	const { createNewRecord, uploadFilesToIPFS, checkIfWalletConnected } =
+		useContext(EHRContext);
 
-        // handleUser(userObj);
-    };
-    let button;
-    if (uploading == "false") {
-        button = <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-        >
-            Create Record
-        </Button>
-    } else {
-        button = <CircularProgress />
-    }
+	useEffect(() => {
+		checkIfWalletConnected();
+	});
 
-    return (
-        <div className={styles.dashboard_wrapper}>
-            <Snackbar
-                open={open}
-                autoHideDuration={600}
-                onClose={handleClose}
-                message="Note archived"
-            />
-            <Sidebar value="Profile" />
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography component="h1" variant="h5">
-                            Create Record
-                        </Typography>
-                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        autocomplete="Record Name"
-                                        name="recordName"
-                                        required
-                                        fullWidth
-                                        id="recordName"
-                                        label="Record Name"
-                                        autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="docName"
-                                        label="Doctor Name"
-                                        name="docName"
-                                        autoComplete="tDoctor's Name"
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        autocomplete="User Address"
-                                        name="userAdd"
-                                        required
-                                        fullWidth
-                                        id="userAdd"
-                                        label="User Address"
-                                        autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                    <TextField
-                                        autocomplete="Record Hash"
-                                        name="recordHash"
-                                        required
-                                        fullWidth
-                                        id="recordHash"
-                                        label="Record Hash"
-                                        autoFocus
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                        <DatePicker
-                                            required
-                                            label="Issue Date"
-                                            id="issueDate"
-                                            name="issueDate"
-                                            value={IssueDate}
-                                            onChange={(newValue) => {
-                                                setIssueDate(newValue);
-                                            }}
-                                            renderInput={(params) => <TextField {...params} />}
-                                        />
-                                    </LocalizationProvider>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        id="testSuggested"
-                                        label="Test Suggested"
-                                        name="testSuggested"
-                                        autoComplete="test Suggested"
-                                    />
-                                </Grid>
-                            </Grid>
-                            {button}
+	const uploadRecord = useRef(null);
 
-                        </Box>
-                    </Box>
-                </Container>
-            </ThemeProvider>
-        </div>
-    );
+	const [recordName, setRecordName] = useState("");
+	const [docName, setDocName] = useState("");
+	const [recordFile, setRecordFile] = useState(null);
+	const [patientAddress, setPatientAddress] = useState("");
+	const [testSuggested, setTestSuggested] = useState("");
+
+	const handlePosterUploadImage = (e) => {
+		e.preventDefault();
+		uploadRecord.current.click();
+	};
+
+	const handlePosterFileChange = (e) => {
+		setRecordName(e.target.files[0].name);
+		setRecordFile(e.target.files);
+	};
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		console.log("Hello");
+		try {
+			const cid = await uploadFilesToIPFS(recordFile);
+			console.log(cid);
+			await createNewRecord(
+				patientAddress,
+				docName,
+				cid,
+				recordName,
+				String(new Date()),
+				testSuggested
+			);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	let button;
+
+	return (
+		<div className={styles.dashboard_wrapper}>
+			<HSidebar value="NewRecord" />
+			<div className={styles.main_wrapper}>
+				<div className={styles.navBar}>
+					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
+					{/* {currentAccount === "" ? (
+						<button
+							className={styles.connectButton}
+							onClick={async (e) => {
+								e.preventDefault();
+								console.log("ehll");
+								await connectWallet();
+							}}
+						>
+							Connect Wallet
+						</button>
+					) : (
+						<button
+							className={styles.connectButton}
+							onClick={(e) => setCurrentAccount("")}
+						>
+							Logout
+						</button>
+					)} */}
+				</div>
+				<div>
+					<div className={`${styles.contentBox}`}>
+						<h2>Create a new Record</h2>
+					</div>
+					<div className={`${styles.formBox}`}>
+						<form onSubmit={handleSubmit}>
+							<h2 className={`${styles.heading}`}>
+								Fill Details
+							</h2>
+
+							<div className={styles.inputGroup}>
+								<label className={`${styles.inputLabel}`}>
+									Patient address
+								</label>
+								<input
+									className={styles.input}
+									type="text"
+									placeholder="Enter patient address"
+									value={patientAddress}
+									onChange={(e) =>
+										setPatientAddress(e.target.value)
+									}
+								/>
+							</div>
+							<div className={styles.inputGroup}>
+								<label className={`${styles.inputLabel}`}>
+									Doctor name
+								</label>
+								<input
+									className={styles.input}
+									type="text"
+									placeholder="Enter patient address"
+									value={docName}
+									onChange={(e) => setDocName(e.target.value)}
+								/>
+							</div>
+							<div className={styles.inputGroupLast}>
+								<label className={`${styles.inputLabel}`}>
+									Upload Report
+								</label>
+								<button
+									onClick={handlePosterUploadImage}
+									className={styles.inputCombined}
+								></button>
+								<input
+									onChange={handlePosterFileChange}
+									className={` ${styles.fileInput}`}
+									type="file"
+									placeholder={""}
+								/>
+							</div>
+
+							<div className={styles.both}>
+								<div className={`${styles.inputContainer}`}>
+									<label className={`${styles.inputLabel}`}>
+										Test suggested
+									</label>
+									<input
+										className={styles.inputCombined}
+										type="text"
+										placeholder="Prescribe the test "
+										value={testSuggested}
+										onChange={(e) =>
+											setTestSuggested(e.target.value)
+										}
+									/>
+								</div>
+							</div>
+
+							<div className={styles.button}>
+								<a
+									className={styles.anchor}
+									onClick={handleSubmit}
+									href="/"
+								>
+									<span className="ml-4">Create</span>
+								</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
+
+export default NewRecord;

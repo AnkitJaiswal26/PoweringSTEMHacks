@@ -25,7 +25,7 @@ const ProfileScreen = () => {
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{currentAccount === "" ? (
+					{/* {currentAccount === "" ? (
 						<button
 							className={styles.connectButton}
 							onClick={async (e) => {
@@ -43,7 +43,7 @@ const ProfileScreen = () => {
 						>
 							Logout
 						</button>
-					)}
+					)} */}
 				</div>
 				<div className={styles.inforWrapper}>
 					<div className={styles.hospitals_search}>

@@ -5,43 +5,12 @@ import { EHRContext } from "../../../Context/EHRContext";
 const Hospitals = () => {
 	const {
 		currentAccount,
-		setCurrentAccount,
-		connectWallet,
 		fetchAllHospitals,
 		grantAccessToHospital,
 		removeAccessToHospital,
 	} = useContext(EHRContext);
 	const [searchInput, setSearchInput] = useState("");
-	const [hospitals, setHospitals] = useState([
-		// {
-		// 	hosAdd: "hosAdd",
-		// 	name: "hospital",
-		// 	personalAdd: "personalAdd",
-		// 	emailId: "email@email.com",
-		// 	contactNo: "7977005251",
-		// },
-		// {
-		// 	hosAdd: "hosAdd",
-		// 	name: "hospital",
-		// 	personalAdd: "personalAdd",
-		// 	emailId: "email@email.com",
-		// 	contactNo: "7977005251",
-		// },
-		// {
-		// 	hosAdd: "posAdd",
-		// 	name: "hospital",
-		// 	personalAdd: "personalAdd",
-		// 	emailId: "email@email.com",
-		// 	contactNo: "7977005251",
-		// },
-		// {
-		// 	hosAdd: "hosAdd",
-		// 	name: "hospital",
-		// 	personalAdd: "personalAdd",
-		// 	emailId: "email@email.com",
-		// 	contactNo: "7977005251",
-		// },
-	]);
+	const [hospitals, setHospitals] = useState([]);
 
 	const fetchHospitals = useCallback(async () => {
 		const hospits = await fetchAllHospitals();
@@ -79,7 +48,7 @@ const Hospitals = () => {
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{currentAccount === "" ? (
+					{/* {currentAccount === "" ? (
 						<button
 							className={styles.connectButton}
 							onClick={async (e) => {
@@ -97,7 +66,7 @@ const Hospitals = () => {
 						>
 							Logout
 						</button>
-					)}
+					)} */}
 				</div>
 				<div className={styles.content}>
 					<div className={styles.hospitals_search}>

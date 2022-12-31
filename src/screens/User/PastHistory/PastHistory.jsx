@@ -3,58 +3,32 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import { EHRContext } from "../../../Context/EHRContext";
 import styles from "./PastHistory.module.css";
 
-const Hospitals = () => {
+const PastHistory = () => {
 	const {
 		currentAccount,
 		setCurrentAccount,
 		connectWallet,
 		fetchMyDocuments,
+		checkIfWalletConnected,
 	} = useContext(EHRContext);
 
 	const [searchInput, setSearchInput] = useState("");
-	const [history, setHistory] = useState([
-		// {
-		// 	userAdd: "userAdd",
-		// 	hosAdd: "hosAdd",
-		// 	docName: "Dr. Ankit",
-		// 	recordName: "Blood Cancer",
-		// 	issueDate: "10/10/2022",
-		// 	testSuggested: "blood test",
-		// },
-		// {
-		// 	userAdd: "userAdd",
-		// 	hosAdd: "hosAdd",
-		// 	docName: "Dr. Ankit",
-		// 	recordName: "Skin Cancer",
-		// 	issueDate: "10/10/2022",
-		// 	testSuggested: "blood test",
-		// },
-		// {
-		// 	userAdd: "userAdd",
-		// 	hosAdd: "hosAdd",
-		// 	docName: "Dr. Ankit",
-		// 	recordName: "Blood Cancer",
-		// 	issueDate: "10/10/2022",
-		// 	testSuggested: "blood test",
-		// },
-		// {
-		// 	userAdd: "userAdd",
-		// 	hosAdd: "hosAdd",
-		// 	docName: "Dr. Ankit",
-		// 	recordName: "Hair Cancer",
-		// 	issueDate: "10/10/2022",
-		// 	testSuggested: "blood test",
-		// },
-	]);
+	const [history, setHistory] = useState([]);
 
 	const fetchData = useCallback(async () => {
+		console.log("hello");
 		const data = await fetchMyDocuments();
+		console.log(data);
 		setHistory(data);
 	});
 
 	useEffect(() => {
-		fetchData().catch((err) => console.log(err));
+		checkIfWalletConnected();
 	}, []);
+
+	useEffect(() => {
+		fetchData();
+	}, [currentAccount]);
 
 	return (
 		<div className={styles.hospitals_wrapper}>
@@ -62,7 +36,7 @@ const Hospitals = () => {
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{currentAccount === "" ? (
+					{/* {currentAccount === "" ? (
 						<button
 							className={styles.connectButton}
 							onClick={async (e) => {
@@ -80,7 +54,7 @@ const Hospitals = () => {
 						>
 							Logout
 						</button>
-					)}
+					)} */}
 				</div>
 				<div className={styles.content}>
 					<div className={styles.hospitals_search}>
@@ -168,4 +142,4 @@ const Hospitals = () => {
 	);
 };
 
-export default Hospitals;
+export default PastHistory;
