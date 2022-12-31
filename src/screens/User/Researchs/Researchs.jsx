@@ -150,6 +150,22 @@ const Researchs = () => {
 													styles.hospitalDescription
 												}
 											>
+												<b>Required Users:</b>{" "}
+												{research.usersRequired}
+											</div>
+											<div
+												className={
+													styles.hospitalDescription
+												}
+											>
+												<b>Current Users:</b>{" "}
+												{research.currentUsers}
+											</div>
+											<div
+												className={
+													styles.hospitalDescription
+												}
+											>
 												<b>Description:</b> <br />
 												{research.description.length >=
 												200

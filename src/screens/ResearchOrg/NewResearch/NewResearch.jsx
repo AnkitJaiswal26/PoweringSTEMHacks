@@ -32,6 +32,7 @@ const NewResearch = () => {
 	const [description, setDescription] = useState("");
 	const [researchFile, setResearchFile] = useState(null);
 	const [researchName, setResearchName] = useState("");
+	const [usersRequired, setUsersRequired] = useState(0);
 
 	const handlePosterUploadImage = (e) => {
 		e.preventDefault();
@@ -91,7 +92,13 @@ const NewResearch = () => {
 			const cid = await uploadFilesToIPFS(researchFile);
 			console.log(cid);
 
-			await createNewResearch(researchName, description, cid, fileName);
+			await createNewResearch(
+				researchName,
+				description,
+				cid,
+				fileName,
+				usersRequired
+			);
 		} catch (err) {
 			console.log(err);
 		}
@@ -178,6 +185,29 @@ const NewResearch = () => {
 											accept="image/*"
 											onChange={handlePosterFileChange}
 											className="form-control block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm"
+										/>
+									</div>
+								</div>
+								<div>
+									<label
+										htmlFor="name"
+										className="block text-sm font-medium text-gray-700"
+									>
+										Minimum users required
+									</label>
+									<div className="mt-1">
+										<input
+											id="name"
+											name="name"
+											type="number"
+											autoComplete="name"
+											required
+											value={usersRequired}
+											onChange={(e) =>
+												setUsersRequired(e.target.value)
+											}
+											placeholder="Enter the no of users required"
+											className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
 										/>
 									</div>
 								</div>

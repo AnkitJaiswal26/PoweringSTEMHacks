@@ -132,10 +132,28 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const createNewResearch = async (name, description, cid, cidName) => {
+	const createNewResearch = async (
+		name,
+		description,
+		cid,
+		cidName,
+		usersRequired
+	) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			await contract.createNewResearch(name, description, cid, cidName);
+			await contract.createNewResearch(
+				name,
+				description,
+				cid,
+				cidName,
+				usersRequired,
+				{
+					value: ethers.utils.parseUnits(
+						(usersRequired * 0.0001).toString(),
+						"ether"
+					),
+				}
+			);
 			console.log("Added!");
 		} catch (err) {
 			console.log(err);
@@ -175,8 +193,13 @@ export const EHRProvider = ({ children }) => {
 	const removeAccessFromResearch = async (researchId) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			await contract.removeAccessFromResearch(researchId);
-			console.log("Granted!");
+			console.log("Removed!");
+			await contract.removeAccessFromResearch(researchId, {
+				value: ethers.utils.parseUnits("0.0001", "ether"),
+				gasLimit: 3000000,
+			});
+
+			console.log("Removed!");
 		} catch (err) {
 			console.log(err);
 		}
@@ -401,6 +424,7 @@ export const EHRProvider = ({ children }) => {
 		try {
 			var data = await contract.fetchAllResearchs();
 			var result = [];
+			console.log(data);
 			for (let i = 0; i < data.length; i++) {
 				const access = await hasUserRecordAccessForResearch(
 					account,
@@ -413,6 +437,8 @@ export const EHRProvider = ({ children }) => {
 					orgAdd: data[i].orgAdd,
 					cid: data[i].cid,
 					access: access,
+					usersRequired: parseInt(data[i].usersRequired),
+					currentUsers: data[i].currentUsers.toNumber(),
 				});
 			}
 			return result;

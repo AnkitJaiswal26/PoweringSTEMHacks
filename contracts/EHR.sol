@@ -38,6 +38,8 @@ contract EHR {
         string description;
         string cid;
         string cidName;
+        uint256 usersRequired;
+        uint256 currentUsers;
     }
 
     struct Record {
@@ -172,15 +174,21 @@ contract EHR {
         string memory name,
         string memory description,
         string memory cid,
-        string memory cidName
-    ) public {
+        string memory cidName,
+        uint256 usersRequired
+    ) public payable {
+        uint256 price = usersRequired * 0.0001 ether;
+        require(price == msg.value, "Please provide required ethers");
+
         researchMapping[researchCount] = Research(
             researchCount,
             msg.sender,
             name,
             description,
             cid,
-            cidName
+            cidName,
+            usersRequired,
+            0
         );
         researchCount += 1;
     }
@@ -227,7 +235,7 @@ contract EHR {
     }
 
     // Access list for research
-    function grantAccessToResearch(uint256 researchId) public {
+    function grantAccessToResearch(uint256 researchId) public payable {
         uint256 userId = userAddressMapping[msg.sender];
         for (uint256 i = 0; i < userToResearchAccessList[userId].length; i++) {
             if (userToResearchAccessList[userId][i] == researchId) {
@@ -236,9 +244,17 @@ contract EHR {
         }
 
         userToResearchAccessList[userId].push(researchId);
+        researchMapping[researchId].currentUsers += 1;
+        if (
+            researchMapping[researchId].usersRequired <=
+            researchMapping[researchId].currentUsers
+        ) {
+            payable(msg.sender).transfer(0.0001 ether);
+        }
     }
 
-    function removeAccessFromResearch(uint256 researchId) public {
+    function removeAccessFromResearch(uint256 researchId) public payable {
+        require(msg.value == 0.0001 ether);
         uint256 userId = userAddressMapping[msg.sender];
 
         for (uint256 i = 0; i < userToResearchAccessList[userId].length; i++) {
@@ -247,6 +263,8 @@ contract EHR {
                     userId
                 ][userToResearchAccessList[userId].length - 1];
                 userToResearchAccessList[userId].pop();
+
+                researchMapping[researchId].currentUsers -= 1;
             }
         }
     }

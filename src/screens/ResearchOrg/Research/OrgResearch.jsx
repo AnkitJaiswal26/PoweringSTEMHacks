@@ -106,6 +106,15 @@ const OrgResearch = () => {
 									{research.name}
 								</h3>
 								<p className={styles.researchDescription}>
+									Users required:{" "}
+									{research.usersRequired.toNumber()}
+								</p>
+								<p className={styles.researchDescription}>
+									Current Users:{" "}
+									{research.currentUsers.toNumber()}
+								</p>
+								<p className={styles.researchDescription}>
+									<b>Description: </b>
 									{research.description}
 								</p>
 							</div>
@@ -167,10 +176,6 @@ const OrgResearch = () => {
 													className={
 														styles.grantButton
 													}
-													// onClick={(e) => {
-													// 	window.location.href = `https://${doc.recordHash}.ipfs.w3s.link/${doc.recordName}`;
-													// 	// window.location.reload();
-													// }}
 												>
 													<a
 														target="_blank"

@@ -104,7 +104,22 @@ const OrgResearchs = () => {
 													marginBottom: "10px",
 												}}
 											></hr>
-
+											<div
+												className={
+													styles.hospitalDescription
+												}
+											>
+												<b>Required Users:</b>{" "}
+												{research.usersRequired.toNumber()}
+											</div>
+											<div
+												className={
+													styles.hospitalDescription
+												}
+											>
+												<b>Current Users:</b>{" "}
+												{research.currentUsers.toNumber()}
+											</div>
 											<div
 												className={
 													styles.hospitalDescription
