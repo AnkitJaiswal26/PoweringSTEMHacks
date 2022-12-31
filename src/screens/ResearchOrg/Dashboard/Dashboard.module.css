@@ -1,3 +1,9 @@
+:root{
+	--white : #fff;
+	--black : #000;
+	--pink : #DE3C60;
+	--lightPink : #DE3C6040;
+}
 .dashboard_wrapper {
 	display: flex;
 	flex-direction: row;
@@ -22,7 +28,8 @@
 	width: 100%;
 	align-items: center;
 	justify-content: space-between;
-	background-color: rgba(183, 216, 240, 0.4);
+	/* background-color: rgba(183, 216, 240, 0.4); */
+	background-color: var(--lightPink);
 }
 
 .user {
@@ -33,7 +40,7 @@
 .connectButton {
 	padding: 6px 30px;
 	color: white;
-	background-color: #44b4d9;
+	background-color: var(--pink);
 	border: 0;
 	border-radius: 20px;
 	align-items: center;

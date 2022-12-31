@@ -1,3 +1,4 @@
+
 .hospitals_wrapper {
 	display: flex;
 	flex-direction: row;
@@ -23,7 +24,7 @@
 	width: 100%;
 	align-items: center;
 	justify-content: space-between;
-	background-color: rgba(183, 216, 240, 0.4);
+	background-color: var(--lgreen);
 }
 
 .user {
@@ -34,7 +35,7 @@
 .connectButton {
 	padding: 6px 30px;
 	color: white;
-	background-color: #44b4d9;
+	background-color: var(--green);
 	border: 0;
 	border-radius: 20px;
 	align-items: center;
@@ -54,7 +55,7 @@
 	margin-top: 10px;
 	padding: 6px 30px;
 	color: white;
-	background-color: #44b4d9;
+	background-color: var(--green);
 	border: 0;
 	border-radius: 20px;
 	align-items: center;
@@ -71,7 +72,7 @@
 .hosBox {
 	display: flex;
 	flex-direction: column;
-	background-color: #0087ca;
+	background-color: var(--cardgreen);
 	color: white;
 	padding: 20px 1rem;
 	border-radius: 4px;
@@ -79,42 +80,42 @@
 }
 
 .hosBox:hover {
-	background-color: #017dd5;
+	background-color: var(--green);
 	transform: translateY(-4px);
-	box-shadow: 1px 1px 5px #1da0ff;
+	box-shadow: 1px 1px 5px var(--dgreen);
 }
 
 .hosName {
 	cursor: pointer;
 	font-weight: bold;
 	margin-bottom: 10px;
-	color: rgb(255, 255, 255);
+	color: var(--black);
 	font-size: 18px;
 	letter-spacing: 2px;
 	
 }
 
 .hosName:hover {
-	border-bottom: 1px solid #0087ca;
+	border-bottom: 1px solid var(--green);
 }
 
 .hospitalDescription {
 	font-size: 14px;
-	color: #dbdde4;
+	color: #ffffff;
 	margin-bottom: 0;
 }
 
 .hosAddress {
 	margin-top: 5px;
 	font-size: 14px;
-	color: #dbdde4;
+	color: #ffffff;
 }
 
 .grantButton {
 	margin-top: 10px;
 	padding: 6px 30px;
 	color: white;
-	background-color: #44b4d9;
+	background-color: var(--llgreen);
 	border: 0;
 	border-radius: 20px;
 	align-items: center;

@@ -1,51 +1,53 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HSidebar from "../../../components/HospitalSidebar/HSidebar";
 import { EHRContext } from "../../../Context/EHRContext";
+import RegisterHospital from "../RegisterHospital/RegisterHospital";
 import styles from "./PastRecords.module.css";
 
 const HospitalPastRecords = () => {
-	const { currentAccount, getAllHospitalRecords, checkIfWalletConnected } =
-		useContext(EHRContext);
+	const {
+		currentAccount,
+		checkRole,
+		getAllHospitalRecords,
+		checkIfWalletConnected,
+	} = useContext(EHRContext);
+
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const navigate = useNavigate();
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
 
 	useEffect(() => {
 		checkIfWalletConnected();
+	}, []);
+
+	const fetchUser = useCallback(async (account) => {
+		console.log("hello");
+		const data = await checkRole(account);
+		console.log(data);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 1) {
+			navigate("/user/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
+		}
 	});
 
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
+
 	const [searchInput, setSearchInput] = useState("");
-	const [history, setHistory] = useState([
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Blood Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Skin Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Blood Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Hair Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-	]);
+	const [history, setHistory] = useState([]);
 
 	const fetchData = useCallback(async () => {
 		console.log("hello");
@@ -60,6 +62,10 @@ const HospitalPastRecords = () => {
 
 	return (
 		<div className={styles.hospitals_wrapper}>
+			<RegisterHospital
+				closeModal={closeModal}
+				modalIsOpen={modalIsOpen}
+			/>
 			<HSidebar value="Past History" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>

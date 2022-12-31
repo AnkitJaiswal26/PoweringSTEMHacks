@@ -60,7 +60,7 @@ const HomeScreen = () => {
       <Header />
 
       <section className={`${styles.container} ${styles.hero}`}>
-        <h1>Design System for React JS</h1>
+        <h1>Reorgnize System for Healthcare</h1>
         <p>
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis
           sapiente ea est consequatur nesciunt doloremque incidunt, animi nulla
