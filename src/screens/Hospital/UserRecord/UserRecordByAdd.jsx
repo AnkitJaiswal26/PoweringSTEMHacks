@@ -12,8 +12,10 @@ const UserRecordByAdd = () => {
 		currentAccount,
 		fetchUserDocumentsForHospital,
 		checkIfWalletConnected,
+		fetchHospitalByAddress,
 		checkRole,
 	} = useContext(EHRContext);
+	const [user, setUser] = useState({ name: "" });
 
 	const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -37,6 +39,15 @@ const UserRecordByAdd = () => {
 			navigate("/user/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			const data = await fetchHospitalByAddress(account);
+			setUser({
+				hosAdd: data.hosAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+			});
 		}
 	});
 
@@ -86,7 +97,12 @@ const UserRecordByAdd = () => {
 									{recordHistory.issueDate}
 								</div>
 								<button className={styles.grantButton}>
-									View Report
+									<a
+										target="_blank"
+										href={`https://${recordHistory.recordHash}.ipfs.w3s.link/${recordHistory.recordName}`}
+									>
+										View Report
+									</a>
 								</button>
 							</div>
 						);
@@ -136,7 +152,7 @@ const UserRecordByAdd = () => {
 			<HSidebar value="Users" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.searchWrapper}>
 					{/* Search Bar Start  */}

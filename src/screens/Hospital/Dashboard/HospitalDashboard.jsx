@@ -9,6 +9,7 @@ const HospitalDashboard = () => {
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	const navigate = useNavigate();
+	const [user, setUser] = useState({ name: "" });
 
 	const openModal = () => {
 		setIsOpen(true);
@@ -18,8 +19,12 @@ const HospitalDashboard = () => {
 		setIsOpen(false);
 	};
 
-	const { checkIfWalletConnected, currentAccount, checkRole } =
-		useContext(EHRContext);
+	const {
+		checkIfWalletConnected,
+		fetchHospitalByAddress,
+		currentAccount,
+		checkRole,
+	} = useContext(EHRContext);
 
 	useEffect(() => {
 		checkIfWalletConnected();
@@ -35,6 +40,15 @@ const HospitalDashboard = () => {
 			navigate("/user/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			const data = await fetchHospitalByAddress(account);
+			setUser({
+				hosAdd: data.hosAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+			});
 		}
 	});
 
@@ -51,7 +65,7 @@ const HospitalDashboard = () => {
 			<HSidebar value="Dashboard" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.content}></div>
 			</div>

@@ -1,11 +1,12 @@
-:root{
-	--white : #fff;
-	--black : #000;
-	--pink : #DE3C60;
-	--cardpink : #cf6891f4;
-	--lightPink : #DE3C6040;
-	--shadowPink : #de3c5470;
+:root {
+	--white: #fff;
+	--black: #000;
+	--pink: #de3c60;
+	--cardpink: #cf6891f4;
+	--lightPink: #de3c6040;
+	--shadowPink: #de3c5470;
 }
+
 .hospitals_wrapper {
 	display: flex;
 	flex-direction: row;
@@ -89,7 +90,7 @@
 .hosBox:hover {
 	background-color: var(--pink);
 	transform: translateY(-4px);
-	box-shadow: 1px 1px 5px var(--shadowPink)
+	box-shadow: 1px 1px 5px var(--shadowPink);
 }
 
 .hosName {
@@ -99,7 +100,6 @@
 	color: rgb(255, 255, 255);
 	font-size: 18px;
 	letter-spacing: 2px;
-	
 }
 
 .hosName:hover {
@@ -129,6 +129,6 @@
 	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-.grantButton:hover{
-background-color: var(--lightPink);
+.grantButton:hover {
+	background-color: var(--lightPink);
 }

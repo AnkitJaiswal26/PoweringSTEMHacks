@@ -4,6 +4,8 @@ import styles from "./Hospitals.module.css";
 import { EHRContext } from "../../../Context/EHRContext";
 import { useNavigate } from "react-router-dom";
 import RegisterUser from "../RegisterUser/RegisterUser";
+import { toast } from "react-toastify";
+
 const Hospitals = () => {
 	const {
 		currentAccount,
@@ -11,6 +13,7 @@ const Hospitals = () => {
 		grantAccessToHospital,
 		checkIfWalletConnected,
 		removeAccessFromHospital,
+		fetchUserByAddress,
 	} = useContext(EHRContext);
 	const [searchInput, setSearchInput] = useState("");
 	const [hospitals, setHospitals] = useState([]);
@@ -41,6 +44,7 @@ const Hospitals = () => {
 	};
 
 	const { checkRole } = useContext(EHRContext);
+	const [user, setUser] = useState({ name: "" });
 
 	const fetchUser = useCallback(async (account) => {
 		const data = await checkRole(account);
@@ -50,6 +54,18 @@ const Hospitals = () => {
 			navigate("/hospital/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			console.log(account);
+			const data = await fetchUserByAddress(account);
+			setUser({
+				userAdd: data.userAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+				gender: data.gender.toNumber(),
+				dob: data.dob,
+			});
 		}
 	});
 
@@ -58,7 +74,6 @@ const Hospitals = () => {
 	}, [currentAccount]);
 
 	const grantAccess = async (e, address) => {
-		console.log("heel");
 		e.preventDefault();
 		try {
 			await grantAccessToHospital(address);
@@ -84,26 +99,7 @@ const Hospitals = () => {
 			<Sidebar value="Hospitals" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{/* {currentAccount === "" ? (
-						<button
-							className={styles.connectButton}
-							onClick={async (e) => {
-								e.preventDefault();
-								console.log("ehll");
-								await connectWallet();
-							}}
-						>
-							Connect Wallet
-						</button>
-					) : (
-						<button
-							className={styles.connectButton}
-							onClick={(e) => setCurrentAccount("")}
-						>
-							Logout
-						</button>
-					)} */}
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.content}>
 					<div className={styles.hospitals_search}>

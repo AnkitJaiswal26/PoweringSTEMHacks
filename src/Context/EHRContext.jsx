@@ -132,10 +132,10 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const createNewResearch = async (name, description, cid) => {
+	const createNewResearch = async (name, description, cid, cidName) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			await contract.createNewResearch(name, description, cid);
+			await contract.createNewResearch(name, description, cid, cidName);
 			console.log("Added!");
 		} catch (err) {
 			console.log(err);
@@ -183,7 +183,6 @@ export const EHRProvider = ({ children }) => {
 	};
 
 	const fetchAllHospitals = async (account) => {
-		console.log(account);
 		const contract = await connectingWithSmartContract();
 		try {
 			var data = await contract.fetchAllHospitals();
@@ -195,7 +194,6 @@ export const EHRProvider = ({ children }) => {
 					data[i].hosAdd
 				);
 
-				console.log(access);
 				result.push({
 					name: data[i].name,
 					emailId: data[i].emailId,
@@ -215,7 +213,6 @@ export const EHRProvider = ({ children }) => {
 	const fetchResearchById = async (id) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			console.log(id);
 			const data = await contract.fetchResearchById(id);
 			return data;
 		} catch (err) {
@@ -248,7 +245,6 @@ export const EHRProvider = ({ children }) => {
 		try {
 			const myResearchAccessList =
 				await contract.fetchMyHospitalAccessList();
-			console.log(myResearchAccessList);
 			return myResearchAccessList;
 		} catch (err) {
 			console.log(err);
@@ -260,7 +256,6 @@ export const EHRProvider = ({ children }) => {
 		try {
 			const myResearchAccessList =
 				await contract.fetchMyResearchAccessList();
-			console.log(myResearchAccessList);
 			return myResearchAccessList;
 		} catch (err) {
 			console.log(err);
@@ -272,7 +267,6 @@ export const EHRProvider = ({ children }) => {
 		await checkIfWalletConnected();
 		try {
 			const myRecords = await contract.fetchMyDocuments();
-			console.log(myRecords);
 			return myRecords;
 		} catch (err) {
 			console.log(err);
@@ -295,7 +289,6 @@ export const EHRProvider = ({ children }) => {
 		const contract = await connectingWithSmartContract();
 		try {
 			const hospitalRecords = await contract.getAllHospitalRecords();
-			console.log(hospitalRecords);
 			return hospitalRecords;
 		} catch (err) {
 			console.log(err);
@@ -309,7 +302,6 @@ export const EHRProvider = ({ children }) => {
 				userAddress,
 				researchId
 			);
-			console.log(userDocuments);
 			return userDocuments;
 		} catch (err) {
 			console.log(err);
@@ -322,7 +314,6 @@ export const EHRProvider = ({ children }) => {
 			const userList = await contract.fetchAllUsersForResearch(
 				researchId
 			);
-			console.log(userList);
 			return userList;
 		} catch (err) {
 			console.log(err);
@@ -356,7 +347,6 @@ export const EHRProvider = ({ children }) => {
 	) => {
 		const contract = await connectingWithSmartContract();
 		try {
-			console.log(userAddress, hospitalAddress);
 			const access = await contract.hasUserRecordAccessForHospital(
 				userAddress,
 				hospitalAddress
@@ -368,16 +358,27 @@ export const EHRProvider = ({ children }) => {
 	};
 
 	const fetchAllUserDocForResearch = async (id) => {
-		const users = await fetchAllUsersForResearch(id);
-		var result = [];
-		for (let i = 0; i < users.length; i++) {
-			const data = await fetchUserDocumentsForResearch(
-				users[i].userAdd,
-				id
-			);
-			result.push(data);
-		}
-		return result;
+		try {
+			const users = await fetchAllUsersForResearch(id);
+			var result = [];
+			for (let i = 0; i < users.length; i++) {
+				const data = await fetchUserDocumentsForResearch(
+					users[i].userAdd,
+					id
+				);
+				console.log("-------------------");
+				console.log(data.length);
+				if (result.length) {
+					result = [...result, ...data];
+				} else {
+					result = data;
+				}
+			}
+
+			console.log(result);
+
+			return result;
+		} catch (err) {}
 	};
 
 	const hasUserRecordAccessForResearch = async (userAddress, researchId) => {
@@ -399,14 +400,12 @@ export const EHRProvider = ({ children }) => {
 
 		try {
 			var data = await contract.fetchAllResearchs();
-			console.log(data);
 			var result = [];
 			for (let i = 0; i < data.length; i++) {
 				const access = await hasUserRecordAccessForResearch(
 					account,
 					data[i].id
 				);
-				console.log(access);
 				result.push({
 					id: data[i].id.toNumber(),
 					name: data[i].name,

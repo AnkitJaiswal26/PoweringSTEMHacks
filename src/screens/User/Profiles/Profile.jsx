@@ -1,22 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import Sidebar from "../../../components/Sidebar/Sidebar";
 import styles from "./Profile.module.css";
 
-import HSidebar from "../../../components/HospitalSidebar/HSidebar";
-import { useNavigate } from "react-router-dom";
 import { EHRContext } from "../../../Context/EHRContext";
-import RegisterHospital from "../RegisterHospital/RegisterHospital";
+import { useNavigate } from "react-router-dom";
+import RegisterUser from "../RegisterUser/RegisterUser";
 
-const HospitalProfileScreen = () => {
+const ProfileScreen = () => {
 	const [modalIsOpen, setIsOpen] = useState(false);
 
 	const navigate = useNavigate();
-	const [user, setUser] = useState({
-		hosAdd: "",
-		name: "",
-		emailId: "",
-		mobileNo: "",
-		personalAdd: "",
-	});
 
 	const openModal = () => {
 		setIsOpen(true);
@@ -28,9 +21,9 @@ const HospitalProfileScreen = () => {
 
 	const {
 		checkIfWalletConnected,
-		fetchHospitalByAddress,
 		currentAccount,
 		checkRole,
+		fetchUserByAddress,
 	} = useContext(EHRContext);
 
 	useEffect(() => {
@@ -40,21 +33,27 @@ const HospitalProfileScreen = () => {
 	const fetchUser = useCallback(async (account) => {
 		console.log("hello");
 		const data = await checkRole(account);
-		console.log(data);
 		if (data === 0) {
 			openModal(true);
-		} else if (data === 1) {
-			navigate("/user/dashboard");
+		} else if (data === 2) {
+			navigate("/hospital/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
 		} else {
-			const data = await fetchHospitalByAddress(account);
+			const data = await fetchUserByAddress(account);
 			setUser({
-				hosAdd: data.hosAdd,
+				userAdd: data.userAdd,
 				name: data.name,
 				emailId: data.emailId,
-				mobileNo: data.contactNo,
+				mobileNo: data.mobileNo,
 				personalAdd: data.personalAdd,
+				gender:
+					data.gender.toNumber() === 0
+						? "Male"
+						: data.gender.toNumber() === 1
+						? "Female"
+						: "Cannot specify",
+				dob: data.dob,
 			});
 		}
 	});
@@ -63,31 +62,36 @@ const HospitalProfileScreen = () => {
 		fetchUser(currentAccount);
 	}, [currentAccount]);
 
+	const [user, setUser] = useState({
+		name: "",
+		email: "",
+		mobile: "",
+		gender: 0,
+		dob: "",
+		pernonalAdd: "",
+	});
+
 	return (
 		<div className={styles.hospitals_wrapper}>
-			<RegisterHospital
-				closeModal={closeModal}
-				modalIsOpen={modalIsOpen}
-			/>
-			<HSidebar value="Profile" />
+			<RegisterUser closeModal={closeModal} modalIsOpen={modalIsOpen} />
+			<Sidebar value="Profile" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome {user.name}!</h3>
+					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
 				</div>
 				<div className={styles.inforWrapper}>
 					<div className={styles.hospitals_search}>
 						<button className={styles.searchButton} disabled>
-							Hospital Information
+							Profile Information
 						</button>
 					</div>
 					<div className={styles.profileContainer}>
 						{Object.keys(user).map((key, index) => (
-							<div keys={index}>
+							<div key={index}>
 								<div className={styles.profileRow}>
 									<h4 className={styles.title}>
-										{key.toLocaleUpperCase()}{" "}
+										{key.toLocaleUpperCase()} :
 									</h4>
-									<p>:</p>
 									<p className={styles.text}>{user[key]}</p>
 								</div>
 								<hr className={styles.horizontal} />
@@ -100,4 +104,4 @@ const HospitalProfileScreen = () => {
 	);
 };
 
-export default HospitalProfileScreen;
+export default ProfileScreen;

@@ -30,6 +30,7 @@ import {
 	Research,
 	Researchs,
 } from "./screens/User";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
 	const router = createBrowserRouter([
@@ -113,6 +114,7 @@ const App = () => {
 	]);
 	return (
 		<>
+			<ToastContainer />
 			<RouterProvider router={router} />
 		</>
 	);

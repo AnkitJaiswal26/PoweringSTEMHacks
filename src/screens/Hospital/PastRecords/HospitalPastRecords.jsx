@@ -11,9 +11,11 @@ const HospitalPastRecords = () => {
 		checkRole,
 		getAllHospitalRecords,
 		checkIfWalletConnected,
+		fetchHospitalByAddress,
 	} = useContext(EHRContext);
 
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [user, setUser] = useState({ name: "" });
 
 	const navigate = useNavigate();
 
@@ -39,6 +41,15 @@ const HospitalPastRecords = () => {
 			navigate("/user/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			const data = await fetchHospitalByAddress(account);
+			setUser({
+				hosAdd: data.hosAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+			});
 		}
 	});
 
@@ -69,10 +80,7 @@ const HospitalPastRecords = () => {
 			<HSidebar value="Past History" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					<button className={styles.connectButton}>
-						Connect Wallet
-					</button>
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.content}>
 					<div className={styles.hospitals_search}>
@@ -146,7 +154,12 @@ const HospitalPastRecords = () => {
 														styles.grantButton
 													}
 												>
-													View Report
+													<a
+														target="_blank"
+														href={`https://${recordHistory.recordHash}.ipfs.w3s.link/${recordHistory.recordName}`}
+													>
+														View Report
+													</a>
 												</button>
 											</div>
 										);

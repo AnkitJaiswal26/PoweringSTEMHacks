@@ -13,7 +13,10 @@ const PastHistory = () => {
 		fetchMyDocuments,
 		checkIfWalletConnected,
 		checkRole,
+		fetchUserByAddress,
 	} = useContext(EHRContext);
+
+	const [user, setUser] = useState({ name: "" });
 
 	const navigate = useNavigate();
 
@@ -38,6 +41,17 @@ const PastHistory = () => {
 			navigate("/hospital/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			const data = await fetchUserByAddress(account);
+			setUser({
+				userAdd: data.userAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+				gender: data.gender.toNumber(),
+				dob: data.dob,
+			});
 		}
 	});
 
@@ -69,26 +83,7 @@ const PastHistory = () => {
 			<Sidebar value="Past History" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{/* {currentAccount === "" ? (
-						<button
-							className={styles.connectButton}
-							onClick={async (e) => {
-								e.preventDefault();
-								console.log("ehll");
-								await connectWallet();
-							}}
-						>
-							Connect Wallet
-						</button>
-					) : (
-						<button
-							className={styles.connectButton}
-							onClick={(e) => setCurrentAccount("")}
-						>
-							Logout
-						</button>
-					)} */}
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.content}>
 					<div className={styles.hospitals_search}>
@@ -161,6 +156,10 @@ const PastHistory = () => {
 													className={
 														styles.grantButton
 													}
+													onClick={(e) => {
+														window.location.href = `https://${recordHistory.recordHash}.ipfs.w3s.link/${recordHistory.recordName}`;
+														window.location.reload();
+													}}
 												>
 													View Report
 												</button>

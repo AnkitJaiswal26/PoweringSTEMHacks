@@ -46,7 +46,7 @@
 }
 
 .hospitals_search {
-	margin:  20px auto;
+	margin: 20px auto;
 }
 
 .searchButton {
@@ -61,51 +61,52 @@
 	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.1);
 }
 
-
 /* profile  */
-.inforWrapper{
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-    margin-right: auto;
+.inforWrapper {
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
 }
-.profileContainer{
-    background-color: rgb(255, 255, 255);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 3px 3px 30px #dadbe4;
+.profileContainer {
+	background-color: rgb(255, 255, 255);
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	border-radius: 8px;
+	box-shadow: 3px 3px 30px #dadbe4;
 }
-.profileRow{
-    display: flex;
-    justify-content: space-around;
-    padding: 2px;
-}
-
-.title{
-    min-width: 10em;
-    /* background-color: #0087ca; */
-    padding: 10px 12px;
+.profileRow {
+	display: flex;
+	justify-content: space-between;
+	padding: 2px;
 }
 
-.text{
-    min-width: 30em;
-    /* background-color: #4d00ca; */
-    padding: 10px 12px;
-    color: grey;
+.title {
+	width: 150px;
+	text-align: start;
+	align-items: flex-start;
+	min-width: 100px;
+	padding: 10px 12px;
 }
 
-.horizontal{
-    width: 95%;
-    height: 2px;
-    margin-left: auto;
-    margin-right: auto;
-    /* background-color: grey; */
-    margin-bottom: 5px;
+.text {
+	width: calc(100% - 200px);
+	padding: 10px 12px;
+	color: grey;
 }
 
-.col{
-    display: flex;
-    flex-direction: column;
+.horizontal {
+	width: 95%;
+	height: 2px;
+	margin-left: auto;
+	margin-right: auto;
+	/* background-color: grey; */
+	margin-bottom: 5px;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
 }

@@ -1,9 +1,10 @@
-:root{
-	--white : #fff;
-	--black : #000;
-	--pink : #DE3C60;
-	--lightPink : #DE3C6040;
+:root {
+	--white: #fff;
+	--black: #000;
+	--pink: #de3c60;
+	--lightPink: #de3c6040;
 }
+
 .dashboard_wrapper {
 	display: flex;
 	flex-direction: row;

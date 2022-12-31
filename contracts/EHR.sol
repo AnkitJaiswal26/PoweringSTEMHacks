@@ -37,6 +37,7 @@ contract EHR {
         string name;
         string description;
         string cid;
+        string cidName;
     }
 
     struct Record {
@@ -170,14 +171,16 @@ contract EHR {
     function createNewResearch(
         string memory name,
         string memory description,
-        string memory cid
+        string memory cid,
+        string memory cidName
     ) public {
         researchMapping[researchCount] = Research(
             researchCount,
             msg.sender,
             name,
             description,
-            cid
+            cid,
+            cidName
         );
         researchCount += 1;
     }

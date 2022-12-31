@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [user, setUser] = useState({ name: "" });
 
 	const navigate = useNavigate();
 
@@ -20,8 +21,12 @@ const Dashboard = () => {
 		setIsOpen(false);
 	};
 
-	const { checkIfWalletConnected, currentAccount, checkRole } =
-		useContext(EHRContext);
+	const {
+		checkIfWalletConnected,
+		currentAccount,
+		checkRole,
+		fetchUserByAddress,
+	} = useContext(EHRContext);
 
 	useEffect(() => {
 		checkIfWalletConnected();
@@ -36,6 +41,17 @@ const Dashboard = () => {
 			navigate("/hospital/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			const data = await fetchUserByAddress(account);
+			setUser({
+				userAdd: data.userAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+				gender: data.gender.toNumber(),
+				dob: data.dob,
+			});
 		}
 	});
 
@@ -49,10 +65,7 @@ const Dashboard = () => {
 			<Sidebar value="Dashboard" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{/* <button className={styles.connectButton}>
-						Connect Wallet
-					</button> */}
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.content}></div>
 			</div>

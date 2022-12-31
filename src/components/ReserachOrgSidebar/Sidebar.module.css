@@ -1,8 +1,8 @@
-:root{
-	--pink : #DE3C60;
-	--white : #fff;
-	--black : #000;
-	--lightPink : #f09bad;
+:root {
+	--pink: #de3c60;
+	--white: #fff;
+	--black: #000;
+	--lightPink: #f09bad;
 }
 
 .sidebar_wrapper {
@@ -44,8 +44,7 @@
 
 .sidebarList li div:hover,
 .active {
-	/* background-color: #007ea7; */
-	background-color: var(--lightPink);
+	background-color: #f09bad;
 	cursor: pointer;
 }
 

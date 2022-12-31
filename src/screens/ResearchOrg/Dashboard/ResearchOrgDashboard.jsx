@@ -7,6 +7,7 @@ import RegisterOrg from "../RegisterOrg/RegisterOrg";
 
 const ResearchOrgDashboard = () => {
 	const [modalIsOpen, setIsOpen] = useState(false);
+	const [user, setUser] = useState({ name: "" });
 
 	const navigate = useNavigate();
 
@@ -18,8 +19,12 @@ const ResearchOrgDashboard = () => {
 		setIsOpen(false);
 	};
 
-	const { checkIfWalletConnected, currentAccount, checkRole } =
-		useContext(EHRContext);
+	const {
+		checkIfWalletConnected,
+		fetchResearchOrgByAddress,
+		currentAccount,
+		checkRole,
+	} = useContext(EHRContext);
 
 	useEffect(() => {
 		checkIfWalletConnected();
@@ -35,6 +40,15 @@ const ResearchOrgDashboard = () => {
 			navigate("/user/dashboard");
 		} else if (data === 2) {
 			navigate("/hospital/dashboard");
+		} else {
+			const data = await fetchResearchOrgByAddress(account);
+			setUser({
+				hosAdd: data.hosAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+			});
 		}
 	});
 
@@ -44,14 +58,11 @@ const ResearchOrgDashboard = () => {
 
 	return (
 		<div className={styles.dashboard_wrapper}>
-			<RegisterOrg
-				closeModal={closeModal}
-				modalIsOpen={modalIsOpen}
-			/>
+			<RegisterOrg closeModal={closeModal} modalIsOpen={modalIsOpen} />
 			<RSidebar value="Dashboard" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 				<div className={styles.content}></div>
 			</div>

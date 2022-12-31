@@ -16,9 +16,11 @@ const NewRecord = () => {
 		createNewRecord,
 		uploadFilesToIPFS,
 		checkIfWalletConnected,
+		fetchHospitalByAddress,
 		currentAccount,
 		checkRole,
 	} = useContext(EHRContext);
+	const [user, setUser] = useState({ name: "" });
 
 	const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -46,6 +48,15 @@ const NewRecord = () => {
 			navigate("/user/dashboard");
 		} else if (data === 3) {
 			navigate("/org");
+		} else {
+			const data = await fetchHospitalByAddress(account);
+			setUser({
+				hosAdd: data.hosAdd,
+				name: data.name,
+				emailId: data.emailId,
+				mobileNo: data.mobileNo,
+				personalAdd: data.personalAdd,
+			});
 		}
 	});
 
@@ -100,26 +111,7 @@ const NewRecord = () => {
 
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
-					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{/* {currentAccount === "" ? (
-						<button
-							className={styles.connectButton}
-							onClick={async (e) => {
-								e.preventDefault();
-								console.log("ehll");
-								await connectWallet();
-							}}
-						>
-							Connect Wallet
-						</button>
-					) : (
-						<button
-							className={styles.connectButton}
-							onClick={(e) => setCurrentAccount("")}
-						>
-							Logout
-						</button>
-					)} */}
+					<h3 className={styles.user}>Welcome {user.name}!</h3>
 				</div>
 
 				<div className="min-h-fit mt-3 mb-1 flex flex-col justify-center sm:px-6 lg:px-8">
