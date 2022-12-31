@@ -1,8 +1,8 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../../components/Sidebar/Sidebar";
 import styles from "./Researchs.module.css";
 import { useNavigate } from "react-router-dom";
-import { EHRContext } from "../../Context/EHRContext";
+import { EHRContext } from "../../../Context/EHRContext";
 
 const Researchs = () => {
 	const {

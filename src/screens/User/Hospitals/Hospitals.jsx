@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../../components/Sidebar/Sidebar";
 import styles from "./Hospitals.module.css";
-import { EHRContext } from "../../Context/EHRContext";
+import { EHRContext } from "../../../Context/EHRContext";
 const Hospitals = () => {
 	const {
 		currentAccount,

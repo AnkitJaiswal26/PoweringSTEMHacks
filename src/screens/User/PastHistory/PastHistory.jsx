@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import { EHRContext } from "../../Context/EHRContext";
+import Sidebar from "../../../components/Sidebar/Sidebar";
+import { EHRContext } from "../../../Context/EHRContext";
 import styles from "./PastHistory.module.css";
 
 const Hospitals = () => {

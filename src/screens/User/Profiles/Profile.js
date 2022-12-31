@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../../components/Sidebar/Sidebar";
 import styles from "./Profile.module.css";
 
 import { Container } from "@mui/system";
-import { EHRContext } from "../../Context/EHRContext";
+import { EHRContext } from "../../../Context/EHRContext";
 
 const ProfileScreen = () => {
 	const { currentAccount, setCurrentAccount, connectWallet } =

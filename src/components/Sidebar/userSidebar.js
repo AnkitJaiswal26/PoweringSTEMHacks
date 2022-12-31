@@ -13,22 +13,22 @@ export const userSidebar = [
 	},
 	{
 		name: "Hospitals",
-		url: "/hospitals",
+		url: "/user/hospitals",
 		icon: <LocalHospitalIcon className={styles.listIcon} />,
 	},
 	{
 		name: "Past History",
-		url: "/history",
+		url: "/user/history",
 		icon: <HistoryEduIcon className={styles.listIcon} />,
 	},
 	{
 		name: "Researchs",
-		url: "/researchs",
+		url: "/user/researchs",
 		icon: <BiotechIcon className={styles.listIcon} />,
 	},
 	{
 		name: "Profile",
-		url: "/profile",
+		url: "/user/profile",
 		icon: <Person2Icon className={styles.listIcon} />,
 	},
 ];

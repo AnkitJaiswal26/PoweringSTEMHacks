@@ -7,9 +7,10 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 const Sidebar = ({ value }) => {
 	return (
 		<div className={styles.sidebar_wrapper}>
+			<Link to="/">
 			<div className={styles.logoDiv}>EHRecord</div>
+			</Link>
 			<hr className="bg-gray-200 border-0" />
-
 			<div>
 				<ul className={styles.sidebarList}>
 					{userSidebar.map((item, index) => {
