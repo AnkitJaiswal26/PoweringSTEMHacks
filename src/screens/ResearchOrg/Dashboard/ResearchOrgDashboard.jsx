@@ -44,6 +44,10 @@ const ResearchOrgDashboard = () => {
 
 	return (
 		<div className={styles.dashboard_wrapper}>
+			<RegisterOrg
+				closeModal={closeModal}
+				modalIsOpen={modalIsOpen}
+			/>
 			<RSidebar value="Dashboard" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
