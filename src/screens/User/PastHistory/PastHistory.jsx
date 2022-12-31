@@ -156,12 +156,13 @@ const PastHistory = () => {
 													className={
 														styles.grantButton
 													}
-													onClick={(e) => {
-														window.location.href = `https://${recordHistory.recordHash}.ipfs.w3s.link/${recordHistory.recordName}`;
-														window.location.reload();
-													}}
 												>
-													View Report
+													<a
+														target="_blank"
+														href={`https://${recordHistory.recordHash}.ipfs.w3s.link/${recordHistory.recordName}`}
+													>
+														View Report
+													</a>
 												</button>
 											</div>
 										);
