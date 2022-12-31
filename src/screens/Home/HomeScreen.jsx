@@ -31,8 +31,8 @@ const HomeScreen = () => {
           }}
         >
           <Container maxWidth="sm">
-            <Typography variant="body1">
-              My sticky footer can be found here.
+            <Typography variant="body">
+              Unified Healthcare Interface 2023 &#169; - All Rights Reserved.
             </Typography>
           </Container>
         </Box>
@@ -40,7 +40,7 @@ const HomeScreen = () => {
     );
   };
 
-  const CustomButton = ({ text, color = "blue" }) => {
+  const CustomButton = ({ text, color = "#753bd9" }) => {
     return (
       <button className={styles.btn} style={{ backgroundColor: `${color}` }}>
         {text}
@@ -68,7 +68,7 @@ const HomeScreen = () => {
       <section className={`${styles.container} ${styles.hero}`}>
         <h1>Reorganizing Healthcare</h1>
         <p>
-          Unified Healthcare Interface or UHI is designed to bring out a healthcare revolution
+          <strong style={{color: "#753bd9", fontSize: "1.2rem"}}>U</strong>nified <strong style={{color: "#753bd9", fontSize: "1.2rem"}}>H</strong>ealthcare <strong style={{color: "#753bd9", fontSize: "1.2rem"}}>I</strong>nterface or UHI is designed to bring out a healthcare revolution
           by providing platform for people, Doctors, Hospitals, Medtech, Healthtech Orgnizations
           where all the medical data can be stored and accesed and used for the patients benefit
           as and when required but maintaining the privacy of the patient and ill use of their
@@ -79,7 +79,7 @@ const HomeScreen = () => {
 
       <section className={styles.features}>
         <div className={`${styles.container}`}>
-          <button>Key Features</button>
+          <button style={{backgroundColor: "#753bd9", padding: "7px 15px"}}>Key Features</button>
           <h3>what is UHI?</h3>
           <p>Our UHI provides a central repository of data comprising all the tests and other medical processes a patient went through, it reduces the scope of duplication of the same processes and thus prevents delay in the treatment.
             This data of patients can be used by hospitals to provide blood and other medical services to needy patients.
@@ -88,17 +88,17 @@ const HomeScreen = () => {
           </p>
           <div className={`${styles.row} ${styles.features__flex}`}>
             <FeatureCard
-              icon={<LocalHospitalIcon sx={{ fontSize: "80px" }} />}
+              icon={<LocalHospitalIcon sx={{color:"#753bd9", fontSize: "80px" }} />}
               name="Hospital"
               text={HospitalD}
             />
             <FeatureCard
-              icon={<PersonIcon sx={{ fontSize: "80px" }} />}
+              icon={<PersonIcon sx={{ color:"#753bd9" ,fontSize: "80px" }} />}
               name="Patient"
               text={UserD}
             />
             <FeatureCard
-              icon={<PublicIcon sx={{ fontSize: "80px" }} />}
+              icon={<PublicIcon sx={{color:"#753bd9", fontSize: "80px" }} />}
               name="Orgnization"
               text={OrgD}
             />

@@ -24,7 +24,7 @@ export default function Header() {
     <section className="container">
       <div className="navigation" style={{  }}>
         <a href="/" className="brand-name">
-          Unified Healthcare Interface
+        <strong style={{color: "#753bd9", fontSize: "1.7rem"}}>U</strong>nified <strong style={{color: "#753bd9", fontSize: "1.7rem"}}>H</strong>ealthcare <strong style={{color: "#753bd9", fontSize: "1.7rem"}}>I</strong>nterface
         </a>
         <button
           className="hamburger"

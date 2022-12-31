@@ -85,7 +85,6 @@
 .features  p{
     display: block;
     text-decoration: none;
-    text-transform: capitalize; 
     color: grey;
     padding: 0.5em;
     margin: 5px;
@@ -96,6 +95,8 @@
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+    margin-top: 3rem;
+
 }
 
 .feature_card{

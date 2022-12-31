@@ -99,8 +99,6 @@
       display: block;
     }
   }
-  
-
 
   .container{
     margin: 0px auto;
@@ -109,7 +107,8 @@
 }
 
 .navigation-menu li:last-child{
-  background-color: rgb(240, 239, 239);
+  background-color:#753bd9;
+  color: white;
   border-radius: 10px;
   padding: 0.2em 0.5em!important ;
 }
