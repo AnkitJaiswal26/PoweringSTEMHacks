@@ -1,14 +1,59 @@
 import { AccountBoxSharp } from "@mui/icons-material";
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RSidebar from "../../../components/ReserachOrgSidebar/RSidebar";
 import { EHRContext } from "../../../Context/EHRContext";
+import RegisterOrg from "../RegisterOrg/RegisterOrg";
 import styles from "./Research.module.css";
 
 const OrgResearch = () => {
 	const [researchId, setResearchId] = useState(null);
 
-	const { currentAccount, setCurrentAccount, connectWallet } =
-		useContext(EHRContext);
+	const {
+		currentAccount,
+		checkIfWalletConnected,
+		fetchResearchById,
+		hasUserRecordAccessForResearch,
+	} = useContext(EHRContext);
+
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const navigate = useNavigate();
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
+	const { checkRole, fetchAllUserDocForResearch } = useContext(EHRContext);
+
+	useEffect(() => {
+		checkIfWalletConnected();
+	}, []);
+
+	const fetchUser = useCallback(async (account) => {
+		console.log("hello");
+		const data = await checkRole(account);
+		console.log(data);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 1) {
+			navigate("/user/dashboard");
+		} else if (data === 2) {
+			navigate("/hospital/dashboard");
+		}
+	});
+
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
+
+	useEffect(() => {
+		checkIfWalletConnected();
+	});
 
 	const [research, setResearch] = useState({
 		orgAdd: "orgadd",
@@ -53,45 +98,31 @@ const OrgResearch = () => {
 		},
 	]);
 
-	// const fetchData = useCallback(async (researchId) => {
-	// 	console.log("Hello");
-	// 	const data = await fetchResearchById(parseInt(researchId));
-	// 	if (data && currentAccount) {
-	// 		console.log(data);
-	// 		const access = await hasUserRecordAccessForResearch(
-	// 			currentAccount,
-	// 			researchId
-	// 		);
-	// 		setResearch({ ...data, access });
-	// 	} else {
-	// 		setResearch(null);
-	// 	}
-	// });
+	const fetchData = useCallback(async (researchId) => {
+		const data = await fetchResearchById(parseInt(researchId));
+		setResearch(data);
 
-	// const connect = useCallback(async () => {
-	// 	await connectWallet();
-	// });
+		const newData = await fetchAllUserDocForResearch(researchId);
+		setDocuments(newData);
+	});
 
-	// useEffect(() => {
-	// 	const researchId = window.location.pathname.split("/")[2];
-	// 	fetchData(researchId).catch((err) => console.log(err));
+	useEffect(() => {
+		const researchId = window.location.pathname.split("/")[3];
+		fetchData(researchId).catch((err) => console.log(err));
 
-	// 	setResearchId(window.location.pathname.split("/")[2]);
-	// }, []);
+		setResearchId(window.location.pathname.split("/")[2]);
+	}, []);
 
 	return (
 		<div className={styles.researchs_wrapper}>
+			<RegisterOrg closeModal={closeModal} modalIsOpen={modalIsOpen} />
 			<RSidebar value="Researchs" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					{currentAccount === "" ? (
+					{/* {currentAccount === "" ? (
 						<button
 							className={styles.connectButton}
-							onClick={async (e) => {
-								e.preventDefault();
-								await connectWallet();
-							}}
 						>
 							Connect Wallet
 						</button>
@@ -102,7 +133,7 @@ const OrgResearch = () => {
 						>
 							Logout
 						</button>
-					)}
+					)} */}
 				</div>
 				{research && (
 					<div className={styles.content}>

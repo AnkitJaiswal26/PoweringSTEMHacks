@@ -2,40 +2,76 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import styles from "./Hospitals.module.css";
 import { EHRContext } from "../../../Context/EHRContext";
+import { useNavigate } from "react-router-dom";
+import RegisterUser from "../RegisterUser/RegisterUser";
 const Hospitals = () => {
 	const {
 		currentAccount,
 		fetchAllHospitals,
 		grantAccessToHospital,
-		removeAccessToHospital,
+		checkIfWalletConnected,
+		removeAccessFromHospital,
 	} = useContext(EHRContext);
 	const [searchInput, setSearchInput] = useState("");
 	const [hospitals, setHospitals] = useState([]);
 
-	const fetchHospitals = useCallback(async () => {
-		const hospits = await fetchAllHospitals();
+	const fetchHospitals = useCallback(async (account) => {
+		const hospits = await fetchAllHospitals(account);
 		setHospitals(hospits);
-		console.log(hospits);
 	});
 
 	useEffect(() => {
-		fetchHospitals().catch((err) => console.log(err));
-	}, []);
+		checkIfWalletConnected();
+	});
 
-	const grantAccess = async (e, id) => {
+	useEffect(() => {
+		fetchHospitals(currentAccount).catch((err) => console.log(err));
+	}, [currentAccount]);
+
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const navigate = useNavigate();
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
+	const { checkRole } = useContext(EHRContext);
+
+	const fetchUser = useCallback(async (account) => {
+		const data = await checkRole(account);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 2) {
+			navigate("/hospital/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
+		}
+	});
+
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
+
+	const grantAccess = async (e, address) => {
+		console.log("heel");
 		e.preventDefault();
 		try {
-			await grantAccessToHospital(parseInt(id));
+			await grantAccessToHospital(address);
 			window.location.reload();
 		} catch (err) {
 			console.log(err);
 		}
 	};
 
-	const removeAccess = async (e, id) => {
+	const removeAccess = async (e, address) => {
 		e.preventDefault();
 		try {
-			await removeAccessToHospital(parseInt(id));
+			await removeAccessFromHospital(address);
 			window.location.reload();
 		} catch (err) {
 			console.log(err);
@@ -44,6 +80,7 @@ const Hospitals = () => {
 
 	return (
 		<div className={styles.hospitals_wrapper}>
+			<RegisterUser closeModal={closeModal} modalIsOpen={modalIsOpen} />
 			<Sidebar value="Hospitals" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>

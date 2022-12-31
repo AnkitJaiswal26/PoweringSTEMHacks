@@ -182,7 +182,8 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const fetchAllHospitals = async () => {
+	const fetchAllHospitals = async (account) => {
+		console.log(account);
 		const contract = await connectingWithSmartContract();
 		try {
 			var data = await contract.fetchAllHospitals();
@@ -190,9 +191,11 @@ export const EHRProvider = ({ children }) => {
 
 			for (let i = 0; i < data.length; i++) {
 				const access = await hasUserRecordAccessForHospital(
-					currentAccount,
+					account,
 					data[i].hosAdd
 				);
+
+				console.log(access);
 				result.push({
 					name: data[i].name,
 					emailId: data[i].emailId,
@@ -201,9 +204,9 @@ export const EHRProvider = ({ children }) => {
 					personalAdd: data[i].personalAdd,
 					access: access,
 				});
-				data[i] = { ...data[i], access: access };
+				// data[i] = { ...data[i], access: access };
 			}
-			return data;
+			return result;
 		} catch (err) {
 			console.log(err);
 		}
@@ -212,6 +215,7 @@ export const EHRProvider = ({ children }) => {
 	const fetchResearchById = async (id) => {
 		const contract = await connectingWithSmartContract();
 		try {
+			console.log(id);
 			const data = await contract.fetchResearchById(id);
 			return data;
 		} catch (err) {
@@ -281,7 +285,6 @@ export const EHRProvider = ({ children }) => {
 			const userDocuments = await contract.fetchUserDocumentsForHospital(
 				userAddress
 			);
-			console.log(userDocuments);
 			return userDocuments;
 		} catch (err) {
 			console.log(err);
@@ -353,6 +356,7 @@ export const EHRProvider = ({ children }) => {
 	) => {
 		const contract = await connectingWithSmartContract();
 		try {
+			console.log(userAddress, hospitalAddress);
 			const access = await contract.hasUserRecordAccessForHospital(
 				userAddress,
 				hospitalAddress
@@ -363,9 +367,23 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
+	const fetchAllUserDocForResearch = async (id) => {
+		const users = await fetchAllUsersForResearch(id);
+		var result = [];
+		for (let i = 0; i < users.length; i++) {
+			const data = await fetchUserDocumentsForResearch(
+				users[i].userAdd,
+				id
+			);
+			result.push(data);
+		}
+		return result;
+	};
+
 	const hasUserRecordAccessForResearch = async (userAddress, researchId) => {
 		const contract = await connectingWithSmartContract();
 		try {
+			console.log(userAddress, researchId);
 			const access = await contract.hasUserRecordAccessForResearch(
 				userAddress,
 				researchId
@@ -376,9 +394,8 @@ export const EHRProvider = ({ children }) => {
 		}
 	};
 
-	const fetchAllResearchs = async () => {
-		const provider = new ethers.providers.JsonRpcProvider();
-		const contract = await fetchContract(provider);
+	const fetchAllResearchs = async (account) => {
+		const contract = await connectingWithSmartContract();
 
 		try {
 			var data = await contract.fetchAllResearchs();
@@ -386,9 +403,10 @@ export const EHRProvider = ({ children }) => {
 			var result = [];
 			for (let i = 0; i < data.length; i++) {
 				const access = await hasUserRecordAccessForResearch(
-					currentAccount,
+					account,
 					data[i].id
 				);
+				console.log(access);
 				result.push({
 					id: data[i].id.toNumber(),
 					name: data[i].name,
@@ -398,7 +416,7 @@ export const EHRProvider = ({ children }) => {
 					access: access,
 				});
 			}
-			return data;
+			return result;
 		} catch (err) {
 			console.log(err);
 		}
@@ -417,7 +435,6 @@ export const EHRProvider = ({ children }) => {
 		try {
 			const contract = await connectingWithSmartContract();
 			const data = await contract.checkRole();
-			console.log(data);
 			return data.toNumber();
 		} catch (err) {
 			console.log(err);
@@ -443,6 +460,8 @@ export const EHRProvider = ({ children }) => {
 				grantAccessToResearch,
 				fetchMyHospitalAccessList,
 				fetchMyResearchAccessList,
+				fetchAllUsersForResearch,
+				fetchAllUserDocForResearch,
 				fetchMyResearchs,
 				removeAccessFromHospital,
 				removeAccessFromResearch,

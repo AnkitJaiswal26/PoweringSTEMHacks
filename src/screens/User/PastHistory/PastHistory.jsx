@@ -1,16 +1,49 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import { EHRContext } from "../../../Context/EHRContext";
+import RegisterUser from "../RegisterUser/RegisterUser";
 import styles from "./PastHistory.module.css";
 
 const PastHistory = () => {
+	const [modalIsOpen, setIsOpen] = useState(false);
+
 	const {
 		currentAccount,
-		setCurrentAccount,
-		connectWallet,
 		fetchMyDocuments,
 		checkIfWalletConnected,
+		checkRole,
 	} = useContext(EHRContext);
+
+	const navigate = useNavigate();
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
+	useEffect(() => {
+		checkIfWalletConnected();
+	}, []);
+
+	const fetchUser = useCallback(async (account) => {
+		console.log("hello");
+		const data = await checkRole(account);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 2) {
+			navigate("/hospital/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
+		}
+	});
+
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
 
 	const [searchInput, setSearchInput] = useState("");
 	const [history, setHistory] = useState([]);
@@ -32,6 +65,7 @@ const PastHistory = () => {
 
 	return (
 		<div className={styles.hospitals_wrapper}>
+			<RegisterUser closeModal={closeModal} modalIsOpen={modalIsOpen} />
 			<Sidebar value="Past History" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>

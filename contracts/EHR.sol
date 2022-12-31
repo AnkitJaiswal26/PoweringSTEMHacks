@@ -211,7 +211,7 @@ contract EHR {
     function hasUserRecordAccessForHospital(
         address userAddress,
         address hospitalAddress
-    ) internal view returns (bool) {
+    ) public view returns (bool) {
         uint256 userId = userAddressMapping[userAddress];
         uint256 hosId = hospitalAddressMapping[hospitalAddress];
 
