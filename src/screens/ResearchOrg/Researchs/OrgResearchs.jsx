@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RSidebar from "../../../components/ReserachOrgSidebar/RSidebar";
 import { EHRContext } from "../../../Context/EHRContext";
 import styles from "./OrgResearchs.module.css";
@@ -42,6 +43,7 @@ const OrgResearchs = () => {
 				"Cancer resolving till 2027 lorem espsum espsume espsum espsume espsum espsume spsume spsum espsum",
 		},
 	]);
+	const navigate = useNavigate();
 
 	const fetchData = useCallback(async () => {
 		console.log("hello");
@@ -118,6 +120,12 @@ const OrgResearchs = () => {
 													className={
 														styles.grantButton
 													}
+													onClick={(e) => {
+														e.preventDefault();
+														navigate(
+															`/org/researchs/${research.id.toNumber()}`
+														);
+													}}
 												>
 													View Research
 												</button>

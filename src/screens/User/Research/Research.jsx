@@ -1,28 +1,55 @@
 import { AccountBoxSharp } from "@mui/icons-material";
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Sidebar from "../../../components/Sidebar/Sidebar";
 import { EHRContext } from "../../../Context/EHRContext";
+import RegisterUser from "../RegisterUser/RegisterUser";
 import styles from "./Research.module.css";
 
 const Research = () => {
-	const [researchId, setResearchId] = useState(null);
-
+	const [modalIsOpen, setIsOpen] = useState(false);
 	const {
+		checkIfWalletConnected,
 		currentAccount,
-		setCurrentAccount,
-		connectWallet,
+		// connectWallet,
 		hasUserRecordAccessForResearch,
 		fetchResearchById,
+		checkRole,
 	} = useContext(EHRContext);
 
-	const [research, setResearch] = useState({
-		// orgAdd: "orgadd",
-		// name: "Research Paper",
-		// description:
-		// 	"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets",
-		// cid: "cid",
-		// access: true,
+	const navigate = useNavigate();
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
+	useEffect(() => {
+		checkIfWalletConnected();
+	}, []);
+
+	const fetchUser = useCallback(async (account) => {
+		console.log("hello");
+		const data = await checkRole(account);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 2) {
+			navigate("/hospital/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
+		}
 	});
+
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
+
+	const [researchId, setResearchId] = useState(null);
+
+	const [research, setResearch] = useState({});
 
 	const fetchData = useCallback(async (researchId) => {
 		console.log("Hello");
@@ -39,10 +66,6 @@ const Research = () => {
 		}
 	});
 
-	const connect = useCallback(async () => {
-		await connectWallet();
-	});
-
 	useEffect(() => {
 		const researchId = window.location.pathname.split("/")[2];
 		fetchData(researchId).catch((err) => console.log(err));
@@ -52,6 +75,7 @@ const Research = () => {
 
 	return (
 		<div className={styles.researchs_wrapper}>
+			<RegisterUser closeModal={closeModal} modalIsOpen={modalIsOpen} />
 			<Sidebar value="Researchs" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>

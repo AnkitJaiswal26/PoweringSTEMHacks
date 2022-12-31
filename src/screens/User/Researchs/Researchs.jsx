@@ -3,6 +3,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import styles from "./Researchs.module.css";
 import { useNavigate } from "react-router-dom";
 import { EHRContext } from "../../../Context/EHRContext";
+import RegisterUser from "../RegisterUser/RegisterUser";
 
 const Researchs = () => {
 	const {
@@ -10,27 +11,60 @@ const Researchs = () => {
 		grantAccessToResearch,
 		removeAccessFromResearch,
 	} = useContext(EHRContext);
+
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
+
+	const { checkIfWalletConnected, currentAccount, checkRole } =
+		useContext(EHRContext);
+
+	useEffect(() => {
+		checkIfWalletConnected();
+	}, []);
+
+	const fetchUser = useCallback(async (account) => {
+		console.log("hello");
+		const data = await checkRole(account);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 2) {
+			navigate("/hospital/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
+		}
+	});
+
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
+
 	const [searchInput, setSearchInput] = useState("");
 	const navigate = useNavigate();
 	const [researchs, setResearchs] = useState([]);
 
 	const [filteredData, setFilteredData] = useState(researchs);
 
-	const fetchRecords = useCallback(async () => {
-		const data = await fetchAllResearchs();
+	const fetchRecords = useCallback(async (account) => {
+		const data = await fetchAllResearchs(account);
 		console.log(data);
 		setResearchs(data);
 		setFilteredData(data);
 	});
 	useEffect(() => {
-		fetchRecords().catch((err) => console.log(err));
-	}, []);
+		fetchRecords(currentAccount).catch((err) => console.log(err));
+	}, [currentAccount]);
 
 	const grantAccess = async (e, id) => {
 		e.preventDefault();
 		try {
 			await grantAccessToResearch(parseInt(id));
-			window.location.reload();
 		} catch (err) {
 			console.log(err);
 		}
@@ -40,7 +74,6 @@ const Researchs = () => {
 		e.preventDefault();
 		try {
 			await removeAccessFromResearch(parseInt(id));
-			window.location.reload();
 		} catch (err) {
 			console.log(err);
 		}
@@ -61,6 +94,7 @@ const Researchs = () => {
 
 	return (
 		<div className={styles.researchs_wrapper}>
+			<RegisterUser closeModal={closeModal} modalIsOpen={modalIsOpen} />
 			<Sidebar value="Researchs" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
