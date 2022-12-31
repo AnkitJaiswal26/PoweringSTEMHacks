@@ -182,9 +182,7 @@ const UserRecordByAdd = () => {
 							</div>
 						</div>
 					)}
-					{record.length > 0 && !error
-						? getRecords()
-						: showEmptyRecord()}
+					{record && !error ? getRecords() : showEmptyRecord()}
 				</Container>
 			</div>
 		</div>
