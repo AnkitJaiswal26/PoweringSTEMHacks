@@ -23,7 +23,7 @@
 	width: 100%;
 	align-items: center;
 	justify-content: space-between;
-	background-color: rgba(183, 216, 240, 0.4);
+	background-color: var(--lgreen);
 }
 
 .user {
@@ -34,7 +34,7 @@
 .connectButton {
 	padding: 6px 30px;
 	color: white;
-	background-color: #44b4d9;
+	background-color: var(--green);
 	border: 0;
 	border-radius: 20px;
 	align-items: center;
@@ -54,7 +54,7 @@
 	margin-top: 10px;
 	padding: 6px 30px;
 	color: white;
-	background-color: #44b4d9;
+	background-color: var(--green);
 	border: 0;
 	border-radius: 20px;
 	align-items: center;
@@ -75,7 +75,7 @@
     flex-direction: column;
     width: 100%;
     border-radius: 8px;
-    box-shadow: 3px 3px 30px #dadbe4;
+    box-shadow: 3px 3px 30px #dae4dd;
 }
 .profileRow{
     display: flex;

@@ -1,12 +1,19 @@
+:root{
+	--white : #fff;
+	--black : #000;
+	--green : #40bd89;
+	--dgreen : rgba(4, 100, 65, 0.75);
+	--lgreen : #C3EFDF;
+	--llgreen : #E1F7EF;
+}
 .sidebar_wrapper {
 	display: flex;
 	width: 240px;
 	height: 100vh;
 	flex-direction: column;
 	padding: 20px 10px;
-	background-color: #3c4fff;
-	background-color: #219ebc;
-	background-color: #003459;
+	/* background-color: #003459; */
+	background-color: var(--green);
 	overflow: hidden;
 }
 
@@ -38,8 +45,8 @@
 
 .sidebarList li div:hover,
 .active {
-	background-color: #7a87fc;
-	background-color: #007ea7;
+	/* background-color: #007ea7; */
+	background-color: var(--dgreen);
 	cursor: pointer;
 }
 
