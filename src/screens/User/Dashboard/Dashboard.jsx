@@ -5,9 +5,12 @@ import { EHRContext } from "../../../Context/EHRContext";
 import styles from "./Dashboard.module.css";
 import Modal from "react-modal";
 import RegisterUser from "../RegisterUser/RegisterUser";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const navigate = useNavigate();
 
 	const openModal = () => {
 		setIsOpen(true);
@@ -30,10 +33,10 @@ const Dashboard = () => {
 		if (data === 0) {
 			openModal(true);
 		} else if (data === 2) {
-			console.log("hello");
+			navigate("/hospital/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
 		}
-		// console.log(data);
-		// setHistory(data);
 	});
 
 	useEffect(() => {

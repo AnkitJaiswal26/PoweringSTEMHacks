@@ -3,54 +3,50 @@ import HSidebar from "../../../components/HospitalSidebar/HSidebar";
 import styles from "./FetchUserRecordByAdd.module.css";
 import { Container, Snackbar, Alert } from "@mui/material";
 import { EHRContext } from "../../../Context/EHRContext";
+import { useNavigate } from "react-router-dom";
+import RegisterHospital from "../RegisterHospital/RegisterHospital";
 
 const UserRecordByAdd = () => {
+	const navigate = useNavigate();
 	const {
 		currentAccount,
 		fetchUserDocumentsForHospital,
 		checkIfWalletConnected,
+		checkRole,
 	} = useContext(EHRContext);
+
+	const [modalIsOpen, setIsOpen] = useState(false);
+
+	const openModal = () => {
+		setIsOpen(true);
+	};
+
+	const closeModal = () => {
+		setIsOpen(false);
+	};
 
 	useEffect(() => {
 		checkIfWalletConnected();
 	});
 
+	const fetchUser = useCallback(async (account) => {
+		const data = await checkRole(account);
+		if (data === 0) {
+			openModal(true);
+		} else if (data === 1) {
+			navigate("/user/dashboard");
+		} else if (data === 3) {
+			navigate("/org");
+		}
+	});
+
+	useEffect(() => {
+		fetchUser(currentAccount);
+	}, [currentAccount]);
+
 	const [searchInput, setSearchInput] = useState("");
 	const [error, setError] = useState(false);
-	const [record, setRecord] = useState([
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Blood Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Skin Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Blood Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-		{
-			userAdd: "userAdd",
-			hosAdd: "hosAdd",
-			docName: "Dr. Ankit",
-			recordName: "Hair Cancer",
-			issueDate: "10/10/2022",
-			testSuggested: "blood test",
-		},
-	]);
+	const [record, setRecord] = useState([]);
 
 	const fetchData = useCallback(async () => {
 		console.log("hello");
@@ -70,38 +66,30 @@ const UserRecordByAdd = () => {
 			<div className={styles.hospitalsGrid}>
 				{record &&
 					record.map((recordHistory, id) => {
-						if (
-							searchInput == "" ||
-							recordHistory.recordName
-								.toLowerCase()
-								.includes(searchInput)
-						) {
-							return (
-								<div id={id} className={styles.hosBox}>
-									<div className={styles.hosName}>
-										<span>{recordHistory.recordName}</span>
-									</div>
-									<hr style={{ marginBottom: "10px" }}></hr>
-									<div className={styles.hospitalDescription}>
-										<b>Doctor Name:</b>{" "}
-										{recordHistory.docName}
-									</div>
-
-									<div className={styles.hospitalDescription}>
-										<b>Test Suggested:</b>{" "}
-										{recordHistory.testSuggested}
-									</div>
-									<div className={styles.hosAddress}>
-										<b>Issue Date</b>
-										<br />
-										{recordHistory.issueDate}
-									</div>
-									<button className={styles.grantButton}>
-										View Report
-									</button>
+						return (
+							<div id={id} className={styles.hosBox}>
+								<div className={styles.hosName}>
+									<span>{recordHistory.recordName}</span>
 								</div>
-							);
-						}
+								<hr style={{ marginBottom: "10px" }}></hr>
+								<div className={styles.hospitalDescription}>
+									<b>Doctor Name:</b> {recordHistory.docName}
+								</div>
+
+								<div className={styles.hospitalDescription}>
+									<b>Test Suggested:</b>{" "}
+									{recordHistory.testSuggested}
+								</div>
+								<div className={styles.hosAddress}>
+									<b>Issue Date</b>
+									<br />
+									{recordHistory.issueDate}
+								</div>
+								<button className={styles.grantButton}>
+									View Report
+								</button>
+							</div>
+						);
 					})}
 			</div>
 		</div>
@@ -111,17 +99,17 @@ const UserRecordByAdd = () => {
 		setSearchInput(id);
 	};
 
-	const fetchRecord = () => {
+	const fetchRecord = async () => {
 		setError(false);
-		if (searchInput.length > 0 && searchInput.length != 42) {
+		if (searchInput.length > 0 && searchInput.length !== 42) {
 			setError(`Enter correct User Adderess/id`);
 			return;
 		}
 		setError(false);
-
-		// TODO: request data from fetchUserDocumentsForHospital
-
-		setRecord([]);
+		console.log(searchInput);
+		const data = await fetchUserDocumentsForHospital(searchInput);
+		console.log(data);
+		setRecord(data);
 	};
 
 	const showEmptyRecord = () => {
@@ -140,13 +128,15 @@ const UserRecordByAdd = () => {
 
 	return (
 		<div className={styles.hospitals_wrapper}>
+			<RegisterHospital
+				closeModal={closeModal}
+				modalIsOpen={modalIsOpen}
+			/>
+
 			<HSidebar value="Users" />
 			<div className={styles.main_wrapper}>
 				<div className={styles.navBar}>
 					<h3 className={styles.user}>Welcome Ankit Jaiswal!</h3>
-					<button className={styles.connectButton}>
-						Connect Wallet
-					</button>
 				</div>
 				<div className={styles.searchWrapper}>
 					{/* Search Bar Start  */}
@@ -166,10 +156,7 @@ const UserRecordByAdd = () => {
 							Find
 						</button>
 					</div>
-					{/* Search bar end  */}
 				</div>
-				{/* search output result start */}
-				{/* TODO:  */}
 
 				<Container>
 					{error && (
@@ -183,7 +170,6 @@ const UserRecordByAdd = () => {
 						? getRecords()
 						: showEmptyRecord()}
 				</Container>
-				{/* search output result end */}
 			</div>
 		</div>
 	);
