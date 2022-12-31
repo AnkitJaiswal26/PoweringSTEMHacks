@@ -5,7 +5,7 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import PersonIcon from "@mui/icons-material/Person";
 import PublicIcon from "@mui/icons-material/Public";
 
-const HospitalD = ['● Create new record for patient', '● Access past medical records', '● Check all users profile'];
+const HospitalD = ['● Create new record for patient', '● Access past medical records', '● Check all Patients profile'];
 const UserD = ['● Find the closest hospitals', '● Give data access to Orgs ', '● Access past medical records'];
 const OrgD = ['● Create new Researches', '● Access patient data'];
 
@@ -48,7 +48,7 @@ const HomeScreen = () => {
     );
   };
 
-  const FeatureCard = ({ name, text, icon }) => {
+  const FeatureCard = ({ name, text, icon ,url = "#"}) => {
     return (
       <div className={`${styles.feature_card}`}>
         <div className={styles.icon}>{icon}</div>
@@ -56,7 +56,7 @@ const HomeScreen = () => {
           {text.map(function (name, index) {
             return <p key={index}>{name}</p>;
           })}
-        <a href="#">see more..</a>
+        <a href={url}>see more..</a>
       </div>
     );
   };
@@ -91,16 +91,19 @@ const HomeScreen = () => {
               icon={<LocalHospitalIcon sx={{color:"#753bd9", fontSize: "80px" }} />}
               name="Hospital"
               text={HospitalD}
+              url="/hospital/dashbord"
             />
             <FeatureCard
               icon={<PersonIcon sx={{ color:"#753bd9" ,fontSize: "80px" }} />}
               name="Patient"
               text={UserD}
+              url="/user/dashboard"
             />
             <FeatureCard
               icon={<PublicIcon sx={{color:"#753bd9", fontSize: "80px" }} />}
               name="Orgnization"
               text={OrgD}
+              url="/org"
             />
           </div>
         </div>
