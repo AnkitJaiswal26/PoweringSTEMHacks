@@ -1,12 +1,18 @@
+:root{
+	--pink : #DE3C60;
+	--white : #fff;
+	--black : #000;
+	--lightPink : #f09bad;
+}
+
 .sidebar_wrapper {
 	display: flex;
 	width: 240px;
 	height: 100vh;
 	flex-direction: column;
 	padding: 20px 10px;
-	background-color: #3c4fff;
-	background-color: #219ebc;
-	background-color: #003459;
+	/* background-color: #003459; */
+	background-color: var(--pink);
 	overflow: hidden;
 }
 
@@ -38,8 +44,8 @@
 
 .sidebarList li div:hover,
 .active {
-	background-color: #7a87fc;
-	background-color: #007ea7;
+	/* background-color: #007ea7; */
+	background-color: var(--lightPink);
 	cursor: pointer;
 }
 
