@@ -5,6 +5,10 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import PersonIcon from "@mui/icons-material/Person";
 import PublicIcon from "@mui/icons-material/Public";
 
+const HospitalD = ['● Create new record for patient', '● Access past medical records', '● Check all users profile'];
+const UserD = ['● Find the closest hospitals', '● Give data access to Orgs ', '● Access past medical records'];
+const OrgD = ['● Create new Researches', '● Access patient data'];
+
 const lorem =
   "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio, quos!";
 
@@ -49,7 +53,9 @@ const HomeScreen = () => {
       <div className={`${styles.feature_card}`}>
         <div className={styles.icon}>{icon}</div>
         <h3>{name}</h3>
-        <p>{text}</p>
+          {text.map(function (name, index) {
+            return <p key={index}>{name}</p>;
+          })}
         <a href="#">see more..</a>
       </div>
     );
@@ -60,12 +66,13 @@ const HomeScreen = () => {
       <Header />
 
       <section className={`${styles.container} ${styles.hero}`}>
-        <h1>Reorgnize System for Healthcare</h1>
+        <h1>Reorganizing Healthcare</h1>
         <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Omnis
-          sapiente ea est consequatur nesciunt doloremque incidunt, animi nulla
-          corrupti veniam nostrum et accusamus repudiandae molestiae quidem esse
-          atque optio sed!
+          Unified Healthcare Interface or UHI is designed to bring out a healthcare revolution
+          by providing platform for people, Doctors, Hospitals, Medtech, Healthtech Orgnizations
+          where all the medical data can be stored and accesed and used for the patients benefit
+          as and when required but maintaining the privacy of the patient and ill use of their
+          data.
         </p>
         <CustomButton text="get started now" />
       </section>
@@ -73,38 +80,31 @@ const HomeScreen = () => {
       <section className={styles.features}>
         <div className={`${styles.container}`}>
           <button>Key Features</button>
-          <h3>what is PoweringSTEM?</h3>
-          <p>{lorem}</p>
+          <h3>what is UHI?</h3>
+          <p>Our UHI provides a central repository of data comprising all the tests and other medical processes a patient went through, it reduces the scope of duplication of the same processes and thus prevents delay in the treatment.
+            This data of patients can be used by hospitals to provide blood and other medical services to needy patients.
+            patients have the power to provide their data to research organization so that they can research and develop solutions to medical problems.
+
+          </p>
           <div className={`${styles.row} ${styles.features__flex}`}>
             <FeatureCard
               icon={<LocalHospitalIcon sx={{ fontSize: "80px" }} />}
               name="Hospital"
-              text={lorem}
+              text={HospitalD}
             />
             <FeatureCard
               icon={<PersonIcon sx={{ fontSize: "80px" }} />}
               name="Patient"
-              text={lorem}
+              text={UserD}
             />
             <FeatureCard
               icon={<PublicIcon sx={{ fontSize: "80px" }} />}
               name="Orgnization"
-              text={lorem}
+              text={OrgD}
             />
           </div>
         </div>
       </section>
-
-      {/* <section className={styles.info}>
-        <div className={`${styles.container}`}>
-          <div className={`${styles.row}`}>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum,
-              dolorum.
-            </p>
-          </div>
-        </div>
-      </section> */}
 
       <Footer />
     </>

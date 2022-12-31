@@ -24,7 +24,7 @@ export default function Header() {
     <section className="container">
       <div className="navigation" style={{  }}>
         <a href="/" className="brand-name">
-          PoweringSTEM
+          Unified Healthcare Interface
         </a>
         <button
           className="hamburger"
