@@ -39,14 +39,6 @@ const App = () => {
 			element: <HomeScreen />,
 		},
 		{
-			path: "/user/dashboard",
-			element: <Dashboard />,
-		},
-		{
-			path: "/org",
-			element: <ResearchOrgDashboard />,
-		},
-		{
 			path: "/org/profile",
 			element: <ResearchOrgProfile />,
 		},
@@ -61,10 +53,6 @@ const App = () => {
 		{
 			path: "/org/researchs",
 			element: <OrgResearchs />,
-		},
-		{
-			path: "/hospital/dashboard",
-			element: <HospitalDashboard />,
 		},
 		{
 			path: "/hospital/profile",

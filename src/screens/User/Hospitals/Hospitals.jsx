@@ -51,9 +51,9 @@ const Hospitals = () => {
 		if (data === 0) {
 			openModal(true);
 		} else if (data === 2) {
-			navigate("/hospital/dashboard");
+			navigate("/hospital/profile");
 		} else if (data === 3) {
-			navigate("/org");
+			navigate("/org/profile");
 		} else {
 			console.log(account);
 			const data = await fetchUserByAddress(account);

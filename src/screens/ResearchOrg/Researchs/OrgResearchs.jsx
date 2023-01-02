@@ -36,9 +36,9 @@ const OrgResearchs = () => {
 		if (data === 0) {
 			openModal(true);
 		} else if (data === 1) {
-			navigate("/user/dashboard");
+			navigate("/user/profile");
 		} else if (data === 2) {
-			navigate("/hospital/dashboard");
+			navigate("/hospital/profile");
 		} else {
 			const data = await fetchResearchOrgByAddress(account);
 			setUser({
@@ -126,8 +126,9 @@ const OrgResearchs = () => {
 												}
 											>
 												<b>Description:</b>{" "}
-												{research && research.description.length >=
-												200
+												{research &&
+												research.description.length >=
+													200
 													? research.description.substring(
 															1,
 															200

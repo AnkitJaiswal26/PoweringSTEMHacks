@@ -44,9 +44,9 @@ const HospitalProfileScreen = () => {
 		if (data === 0) {
 			openModal(true);
 		} else if (data === 1) {
-			navigate("/user/dashboard");
+			navigate("/user/profile");
 		} else if (data === 3) {
-			navigate("/org");
+			navigate("/org/profile");
 		} else {
 			const data = await fetchHospitalByAddress(account);
 			setUser({

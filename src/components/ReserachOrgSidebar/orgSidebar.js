@@ -7,11 +7,6 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import styles from "./Sidebar.module.css";
 export const orgSidebar = [
 	{
-		name: "Dashboard",
-		url: "/org",
-		icon: <DashboardIcon className={styles.listIcon} />,
-	},
-	{
 		name: "New Research",
 		url: "/createNewResearch",
 		icon: <LocalHospitalIcon className={styles.listIcon} />,

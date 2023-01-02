@@ -66,9 +66,9 @@ const NewResearch = () => {
 		if (data === 0) {
 			openModal(true);
 		} else if (data === 1) {
-			navigate("/user/dashboard");
+			navigate("/user/profile");
 		} else if (data === 2) {
-			navigate("/hospital/dashboard");
+			navigate("/hospital/profile");
 		} else {
 			const data = await fetchResearchOrgByAddress(account);
 			setUser({

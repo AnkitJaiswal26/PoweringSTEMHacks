@@ -38,9 +38,9 @@ const PastHistory = () => {
 		if (data === 0) {
 			openModal(true);
 		} else if (data === 2) {
-			navigate("/hospital/dashboard");
+			navigate("/hospital/profile");
 		} else if (data === 3) {
-			navigate("/org");
+			navigate("/org/profile");
 		} else {
 			const data = await fetchUserByAddress(account);
 			setUser({
